@@ -2,11 +2,15 @@ import React, {} from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import Header from "./components/Header/Header";
+import ListeSessionsIntervenant from "./components/ListeSessionsIntervenant/ListeSessionsIntervenant";
 
 export default function App() {
     return (
         <View style={styles.container}>
             <Header />
+            <View style={styles.liste}>
+                <ListeSessionsIntervenant />
+            </View>
         </View>
     );
 }
@@ -14,9 +18,11 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#1D1F31",
+        flexDirection: "column",
+        backgroundColor: "#18171E",
+        paddingBottom: 50,
     },
-    header: {
-        flex: 1,
+    liste: {
+        marginTop: 40,
     },
 });
