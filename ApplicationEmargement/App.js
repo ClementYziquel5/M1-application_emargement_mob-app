@@ -29,13 +29,13 @@ function emargementProf() {
     return (
         <View style={styles.container} >
             <View>
-                <ListeSessionsIntervenant />
+                <ListeSessionsIntervenant nombre="1"/>
             </View>
             <View style={styles.button} >
                 <BoutonEmargement emargement={emargement} emargementEnCours={emargementEnCours} />
             </View>
             <ScrollView>
-                <ListeEleves />
+                <ListeEleves nombre="30"/>
             </ScrollView>
         </View>
     );

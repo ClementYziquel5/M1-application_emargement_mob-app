@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 
-export default function ListeEleves() {
+export default function ListeEleves(props) {
     // Liste de 0 à 10
-    const listeEleves = Array.from(Array(10).keys());
+    const listeEleves = Array.from(Array(parseInt(props.nombre)).keys());
 
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>

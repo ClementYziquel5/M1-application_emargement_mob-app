@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 
-export default function ListeSessionsIntervenant() {
+export default function ListeSessionsIntervenant(props) {
     // Liste de 0 à 10
-    const listeSessions = Array.from(Array(1).keys());
+    const listeSessions = Array.from(Array(parseInt(props.nombre)).keys());
 
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
