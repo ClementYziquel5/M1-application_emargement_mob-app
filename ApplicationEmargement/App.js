@@ -1,16 +1,42 @@
-import React, {} from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, {useState} from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
 
 import Header from "./components/Header/Header";
 import ListeSessionsIntervenant from "./components/ListeSessionsIntervenant/ListeSessionsIntervenant";
+import ListeEleves from "./components/ListeEleves/ListeEleves";
+import BoutonEmargement from "./components/BoutonEmargement/BoutonEmargement";
 
 export default function App() {
+
     return (
         <View style={styles.container}>
-            <Header />
-            <View style={styles.liste}>
+            <View style={styles.header}>
+                <Header/>
+            </View>
+            {emargementProf()}
+        </View>
+    );
+}
+
+function emargementProf() {
+    const [emargementEnCours, setEmargementEnCours] = useState(false);
+
+    // Gérer tout l'émargement ici
+    function emargement() {
+        setEmargementEnCours(!emargementEnCours);
+    }
+
+    return (
+        <View style={styles.container} >
+            <View>
                 <ListeSessionsIntervenant />
             </View>
+            <View style={styles.button} >
+                <BoutonEmargement emargement={emargement} emargementEnCours={emargementEnCours} />
+            </View>
+            <ScrollView>
+                <ListeEleves />
+            </ScrollView>
         </View>
     );
 }
@@ -20,9 +46,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         backgroundColor: "#18171E",
-        paddingBottom: 50,
     },
-    liste: {
-        marginTop: 40,
+    header: {
+        marginBottom: 50,
     },
 });
