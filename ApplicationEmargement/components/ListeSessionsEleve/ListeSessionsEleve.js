@@ -1,14 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-native";
 
 export default function ListeSessionsEleve(props) {
     // Liste de 0 à 10
     const listeSessions = Array.from(Array(parseInt(props.nombre)).keys());
 
     return (
-        <ScrollView contentContainerStyle={styles.ScrollView}>            
+        <ScrollView
+            contentContainerStyle={styles.ScrollView}
+        >            
             {listeSessions.map((session) => (
-                <View key={session} style={styles.session}>
+                <TouchableOpacity
+                    key={session}
+                    style={styles.session}
+                    onPress={() => console.log('Appuie sur une session')}
+                >
                     <View style={styles.gauche}>
                         <Text style={styles.matiere}>Matière {session}</Text>
                         <Text style={styles.type}>Type {session}</Text>
@@ -18,7 +24,7 @@ export default function ListeSessionsEleve(props) {
                     <View style={styles.droite}>
                         <Text style={styles.salles}>Salles {session}</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
             ))}
         </ScrollView>
     );
