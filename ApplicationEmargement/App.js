@@ -5,7 +5,7 @@ import Header from "./components/Header/Header";
 import ListeSessionsIntervenant from "./components/ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "./components/ListeEleves/ListeEleves";
 import BoutonEmargement from "./components/BoutonEmargement/BoutonEmargement";
-import BoutonScanner from "./components/BoutonScanner/BoutonScanner";
+import EmargementEleve from "./components/EmargementEleve/EmargementEleve";
 
 export default function App() {
 
@@ -14,7 +14,7 @@ export default function App() {
             <View style={styles.header}>
                 <Header/>
             </View>
-            {emargementEleve()}
+            <EmargementEleve/>
             
         </View>
     );
@@ -43,17 +43,6 @@ function emargementProf() {
     );
 }
 
-function emargementEleve() {
-    return (
-        <View style={styles.emargementEleve} >
-            <Text style={styles.text}>Émargement</Text>
-            <View style={styles.button} >
-                <BoutonScanner />
-            </View>
-        </View>
-    );
-}
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -62,10 +51,6 @@ const styles = StyleSheet.create({
     },
     emargementProf: {
 
-    },
-    emargementEleve: {
-        flex: 1,
-        flexDirection: "column",
     },
     header: {
         marginBottom: 50,
