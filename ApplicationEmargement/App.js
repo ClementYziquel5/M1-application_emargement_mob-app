@@ -15,6 +15,7 @@ export default function App() {
                 <Header/>
             </View>
             {emargementEleve()}
+            
         </View>
     );
 }
@@ -45,7 +46,7 @@ function emargementProf() {
 function emargementEleve() {
     return (
         <View style={styles.emargementEleve} >
-            <Text style={styles.text}>Emargement</Text>
+            <Text style={styles.text}>Émargement</Text>
             <View style={styles.button} >
                 <BoutonScanner />
             </View>
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         backgroundColor: "#18171E",
-        height: "100%",
     },
     emargementProf: {
 
@@ -75,5 +75,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
         margin: 10,
+        fontFamily:'Cabin-Bold'
     },
 });
