@@ -1,16 +1,27 @@
 import React from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, Dimensions, TouchableOpacity, View, StyleSheet } from "react-native";
+import Svg, { RadialGradient, Stop, Circle } from 'react-native-svg';
  
 export default function BoutonScanner(props){
+    
     return(
         <View style={styles.container}>
             <TouchableOpacity
-                style={styles.button}
-                activeOpacity={0.6}
+                activeOpacity={0.5}
+                onPress = {() => console.log("Scanner")}
             >
-            <Text style={styles.buttonText}>Scanner</Text>
+                <Svg width="200" height="200">  
+                    <RadialGradient id="grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <Stop offset="0" stopColor="rgb(255,255,255)" />
+                        <Stop offset="0.7" stopColor="rgb(200,200,200)" />
+                        <Stop offset="1" stopColor="rgb(150,150,150)" />
+                    </RadialGradient>
+                    <Circle cx="100" cy="100" r="100" fill="url(#grad)" />
+                    <Text style={styles.buttonText}>SCANNER</Text>
+                </Svg>
             </TouchableOpacity>
         </View>
+        
     );
 }
 
@@ -19,22 +30,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
-    button: {
-        color: "black",
-        backgroundColor: "white",
-        borderRadius: 250,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        width: '50%',
-        aspectRatio: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 10,
-        elevation: 5,
-    },
     buttonText: {
         color: "black",
         fontSize: 20,
-        fontWeight: "bold",
+        textAlign: "center",
+        top: 90,
+        fontFamily: "Roboto-Black",
     },
 });
