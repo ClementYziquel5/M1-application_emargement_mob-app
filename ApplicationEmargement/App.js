@@ -8,6 +8,10 @@ import BoutonEmargement from "./components/BoutonEmargement/BoutonEmargement";
 import EmargementEleve from "./components/EmargementEleve/EmargementEleve";
 
 export default function App() {
+    const [isIntervenant, setIsIntervenant] = useState(true);
+    const [id, setId] = useState(4);
+
+    fetchSessions(id, isIntervenant);
 
     return (
         <View style={styles.container}>
@@ -18,6 +22,25 @@ export default function App() {
             
         </View>
     );
+}
+
+async function fetchSessions(id, isIntervenant) {
+    let url = "";
+    if(isIntervenant) {
+        url = process.env.REACT_APP_API_URL+ "/v1.0/session/intervenant/" + id;
+    } else {
+        url = process.env.REACT_APP_API_URL+ "/v1.0/session/etudiant/" + id;
+    }
+    console.log(url);
+    return fetch(url)
+    .then((response) => response.json())
+    .then((json) => {
+        console.log(json);
+        return json;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 }
 
 function emargementProf() {
