@@ -2,13 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 export default function ListeSessionsIntervenant(props) {
-    // Liste de 0 à 10
-    //const listeSessions = Array.from(Array(parseInt(props.nombre)).keys());
-
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
             {props.sessions.map((session) => (
-                <View key={session} style={styles.session}>
+                <View key={session.id} style={styles.session}>
                     <View style={styles.gauche}>
                         <Text style={styles.matiere}>{session.matiere}</Text>
                         <Text style={styles.type}>{session.type}</Text>

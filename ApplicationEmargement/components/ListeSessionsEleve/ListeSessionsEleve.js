@@ -2,27 +2,32 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-native";
 
 export default function ListeSessionsEleve(props) {
-    // Liste de 0 à 10
-    const listeSessions = Array.from(Array(parseInt(props.nombre)).keys());
-
     return (
         <ScrollView
             contentContainerStyle={styles.ScrollView}
         >            
-            {listeSessions.map((session) => (
+            {props.sessions.map((session) => (
                 <TouchableOpacity
-                    key={session}
+                    key={session.id}
                     style={styles.session}
                     onPress={() => console.log('Appuie sur une session')}
                 >
                     <View style={styles.gauche}>
-                        <Text style={styles.matiere}>Matière {session}</Text>
-                        <Text style={styles.type}>Type {session}</Text>
-                        <Text style={styles.groupes}>Profs {session}</Text>
-                        <Text style={styles.heure}>Heures {session}</Text>
+                        <Text style={styles.matiere}>{session.matiere}</Text>
+                        <Text style={styles.type}>{session.type}</Text>
+                        <Text style={styles.groupes}>
+                            {session.intervenants.map((intervenant) => (
+                                intervenant + "  "
+                            ))}
+                        </Text>
+                        <Text style={styles.heure}>{session.heureDebut} - {session.heureFin}</Text>
                     </View>
                     <View style={styles.droite}>
-                        <Text style={styles.salles}>Salles {session}</Text>
+                        <Text style={styles.salles}>
+                            {session.salles.map((salle) => (
+                                salle + "  "
+                            ))}
+                        </Text>
                     </View>
                 </TouchableOpacity>
             ))}

@@ -9,7 +9,7 @@ import EmargementEleve from "./components/EmargementEleve/EmargementEleve";
 
 export default function App() {
     const [isIntervenant, setIsIntervenant] = useState(true);
-    const [id, setId] = useState("4");
+    const [id, setId] = useState("4"); // Pour l'instant en dur (4 = sébastien Langlais)
     const [loaded, setLoaded] = useState(false);
     const [sessions, setSessions] = useState([]);
 
