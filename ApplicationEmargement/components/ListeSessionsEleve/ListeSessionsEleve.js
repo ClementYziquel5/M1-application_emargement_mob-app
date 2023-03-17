@@ -3,14 +3,12 @@ import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-nati
 
 export default function ListeSessionsEleve(props) {
     return (
-        <ScrollView
-            contentContainerStyle={styles.ScrollView}
-        >            
+        <ScrollView contentContainerStyle={styles.ScrollView}>            
             {props.sessions.map((session) => (
                 <TouchableOpacity
                     key={session.id}
                     style={styles.session}
-                    onPress={() => console.log('Appuie sur une session')}
+                    onPress={() => console.log('Appuie sur session ' + session.id)}
                 >
                     <View style={styles.gauche}>
                         <Text style={styles.matiere}>{session.matiere}</Text>
@@ -41,7 +39,6 @@ const styles = StyleSheet.create({
     },
     session: {
         width: 300,
-        height: 130,
         backgroundColor: "#24284E",
         borderRadius: 15,
         margin: 10,

@@ -1,11 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 
 export default function ListeSessionsIntervenant(props) {
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
             {props.sessions.map((session) => (
-                <View key={session.id} style={styles.session}>
+                <TouchableOpacity
+                    key={session.id}
+                    style={styles.session}
+                    onPress={() => console.log('Appuie sur la session ' + session.id)}
+                >
                     <View style={styles.gauche}>
                         <Text style={styles.matiere}>{session.matiere}</Text>
                         <Text style={styles.type}>{session.type}</Text>
@@ -23,7 +27,7 @@ export default function ListeSessionsIntervenant(props) {
                             ))}
                         </Text>
                     </View>
-                </View>
+                </TouchableOpacity>
             ))}
         </ScrollView>
     );

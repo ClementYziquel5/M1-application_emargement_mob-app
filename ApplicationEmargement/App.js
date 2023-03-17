@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator } from "react-native";
 
 import Header from "./components/Header/Header";
 import ListeSessionsIntervenant from "./components/ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "./components/ListeEleves/ListeEleves";
 import BoutonEmargement from "./components/BoutonEmargement/BoutonEmargement";
 import EmargementEleve from "./components/EmargementEleve/EmargementEleve";
+import ListeSessionsEleve from "./components/ListeSessionsEleve/ListeSessionsEleve";
 
 export default function App() {
-    const [isIntervenant, setIsIntervenant] = useState(true);
-    const [id, setId] = useState("4"); // Pour l'instant en dur (4 = sébastien Langlais)
+    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("4"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false);
     const [sessions, setSessions] = useState([]);
 
@@ -24,6 +25,7 @@ export default function App() {
                 <Header/>
             </View>
             {/* <EmargementEleve/> */}
+            {/* <ListeSessionsEleve sessions={sessions} /> */}
             <ListeSessionsIntervenant sessions={sessions} />
         </View>
     )
@@ -33,6 +35,7 @@ export default function App() {
                 <Header/>
             </View>
             <Text style={styles.text}>Chargement...</Text>
+            <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
         </View>
     )
     ;
@@ -45,11 +48,9 @@ async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
     } else {
         url = process.env.REACT_APP_API_URL+ "/v1.0/session/etudiant/" + id;
     }
-    console.log(url);
     return fetch(url)
     .then((response) => response.json())
     .then((json) => {
-        console.log(json);
         setSessions(json);
         setLoaded(true);
     })
@@ -99,5 +100,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         margin: 10,
         fontFamily:'Cabin-Bold'
+    },
+    spinner: {
+        marginTop: 20,
     },
 });
