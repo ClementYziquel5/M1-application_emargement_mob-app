@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import BoutonScanner from "../BoutonScanner/BoutonScanner";
 
+
 export default function EmargementEleve(props) {
 
     return (
