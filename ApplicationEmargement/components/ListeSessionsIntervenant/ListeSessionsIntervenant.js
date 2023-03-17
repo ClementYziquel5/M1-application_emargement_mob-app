@@ -3,20 +3,28 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 export default function ListeSessionsIntervenant(props) {
     // Liste de 0 à 10
-    const listeSessions = Array.from(Array(parseInt(props.nombre)).keys());
+    //const listeSessions = Array.from(Array(parseInt(props.nombre)).keys());
 
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
-            {listeSessions.map((session) => (
+            {props.sessions.map((session) => (
                 <View key={session} style={styles.session}>
                     <View style={styles.gauche}>
-                        <Text style={styles.matiere}>Matière {session}</Text>
-                        <Text style={styles.type}>Type {session}</Text>
-                        <Text style={styles.groupes}>Groupes {session}</Text>
-                        <Text style={styles.heure}>Heures {session}</Text>
+                        <Text style={styles.matiere}>{session.matiere}</Text>
+                        <Text style={styles.type}>{session.type}</Text>
+                        <Text style={styles.groupes}>
+                            {session.groupes.map((groupe) => (
+                                groupe + "  "
+                            ))}
+                            </Text>
+                        <Text style={styles.heure}>{session.heureDebut} - {session.heureFin}</Text>
                     </View>
                     <View style={styles.droite}>
-                        <Text style={styles.salles}>Salles {session}</Text>
+                        <Text style={styles.salles}>
+                            {session.salles.map((salle) => (
+                                salle + "  "
+                            ))}
+                        </Text>
                     </View>
                 </View>
             ))}
@@ -30,7 +38,6 @@ const styles = StyleSheet.create({
     },
     session: {
         width: 300,
-        height: 130,
         backgroundColor: "#24284E",
         borderRadius: 15,
         margin: 10,

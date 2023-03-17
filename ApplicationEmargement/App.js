@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 
 import Header from "./components/Header/Header";
@@ -9,22 +9,36 @@ import EmargementEleve from "./components/EmargementEleve/EmargementEleve";
 
 export default function App() {
     const [isIntervenant, setIsIntervenant] = useState(true);
-    const [id, setId] = useState(4);
+    const [id, setId] = useState("4");
+    const [loaded, setLoaded] = useState(false);
+    const [sessions, setSessions] = useState([]);
 
-    fetchSessions(id, isIntervenant);
+    useEffect(() => {
+        fetchSessions(id, isIntervenant,setLoaded,setSessions);
+    }, []);
 
-    return (
+    return loaded 
+    ?(
         <View style={styles.container}>
             <View style={styles.header}>
                 <Header/>
             </View>
-            <EmargementEleve/>
-            
+            {/* <EmargementEleve/> */}
+            <ListeSessionsIntervenant sessions={sessions} />
         </View>
-    );
+    )
+    :(
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Header/>
+            </View>
+            <Text style={styles.text}>Chargement...</Text>
+        </View>
+    )
+    ;
 }
 
-async function fetchSessions(id, isIntervenant) {
+async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
     let url = "";
     if(isIntervenant) {
         url = process.env.REACT_APP_API_URL+ "/v1.0/session/intervenant/" + id;
@@ -36,14 +50,15 @@ async function fetchSessions(id, isIntervenant) {
     .then((response) => response.json())
     .then((json) => {
         console.log(json);
-        return json;
+        setSessions(json);
+        setLoaded(true);
     })
     .catch((error) => {
         console.error(error);
     });
 }
 
-function emargementProf() {
+function emargementProf(sessions) {
     const [emargementEnCours, setEmargementEnCours] = useState(false);
 
     // Gérer tout l'émargement ici
