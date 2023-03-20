@@ -24,22 +24,30 @@ export default function ListeSessionsIntervenant(props) {
                         !props.emargementEnCours && props.setEmargementEnCours(true);
                     }}
                 >
-                    <View style={styles.gauche}>
+                    <View style={styles.top}>
                         <Text style={styles.matiere}>{session.matiere}</Text>
                         <Text style={styles.type}>{session.type}</Text>
                         <Text style={styles.groupes}>
-                            {session.groupes.map((groupe) => (
-                                groupe + "  "
-                            ))}
-                            </Text>
-                        <Text style={styles.heure}>{session.heureDebut} - {session.heureFin}</Text>
-                    </View>
-                    <View style={styles.droite}>
-                        <Text style={styles.salles}>
-                            {session.salles.map((salle) => (
-                                salle + "  "
-                            ))}
+                            {session.groupes.slice(0, -1).join(",  ")}  
+                            {session.groupes.length > 1 ? ",  " : ""}
+                            {session.groupes.slice(-1)}
                         </Text>
+                        {/* Ce code utilise slice() pour récupérer tous les éléments de session.salles, sauf le dernier (on l'ajoute plus tard), et les concatène avec ",  " en utilisant join().
+                        Ensuite, il vérifie si session.salles a plus d'un élément, et s'il en a, il ajoute ",  " pour séparer le dernier élément du reste.
+                        Enfin, il ajoute le dernier élément de session.salles à la fin de la chaîne de caractères.*/}
+                        
+                    </View>
+                    <View style={styles.bottom}>
+                        <View style={styles.gauche}>
+                            <Text style={styles.heure}>{session.heureDebut} - {session.heureFin}</Text>
+                        </View>
+                        <View style={styles.droite}>
+                            <Text style={styles.salles}>
+                                {session.salles.slice(0, -1).join(", ")}
+                                {session.salles.length > 1 ? ", " : ""}
+                                {session.salles.slice(-1)}
+                            </Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             ))}
@@ -52,45 +60,64 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     session: {
-        width: 300,
-        backgroundColor: "#24284E",
+        width: "85%",
+        backgroundColor: "rgba(29, 31, 49, 1)",
         borderRadius: 15,
         margin: 10,
         padding: 10,
         overflow: "hidden",
-        flexDirection: "row",
+        flexDirection: "column",
+        borderColor: "rgba(68, 68, 68, 1)",
+        borderWidth: 1,
     },
     matiere: {
         fontSize: 20,
-        fontWeight: "bold",
         color: "white",
+        margin: 4,
+        fontFamily: "Cabin-Bold"
     },
     type: {
         fontSize: 15,
         color: "grey",
+        fontFamily: "Cabin-Regular",
+        margin: 4,
     },
     groupes: {
         fontSize: 15,
-        fontWeight: "bold",
         color: "white",
+        margin: 4,
+        fontFamily: "Cabin-Bold"
     },
     heure: {
         fontSize: 15,
         color: "grey",
+        margin: 4,
     },
     salles: {
         fontSize: 15,
         color: "grey",
+        textAlign: "right",
+        width: "100%",
+        marginBottom: 4,
+    },
+    top: {
+        flex: 1,
+        flexDirection: "column",
+        
+    },
+    bottom: {
+        flex: 1,
+        flexDirection: "row",
+    },
+    droite: {
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "flex-end",
     },
     gauche: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "space-between",
-    },
-    droite: {
-        flex: 1,
+        alignItems: "flex-start",
         justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 10,
     },
 });
