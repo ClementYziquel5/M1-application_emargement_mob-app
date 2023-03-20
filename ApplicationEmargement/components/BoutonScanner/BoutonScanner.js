@@ -3,14 +3,13 @@ import { Text, Dimensions, TouchableOpacity, TouchableHighlight, View, StyleShee
 import Svg, { Rect, RadialGradient, Stop, Circle, Mask } from 'react-native-svg';
  
 export default function BoutonScanner(props){
-    let count = 0;
     return(
         <View style={styles.container}>
             <TouchableOpacity
                 activeOpacity={0.5}
                 onPressOut= {() => {
-                    count++;
-                    console.log(count);
+                    console.log("Scanner ...");
+                    // fonctions lorsque l'élève appuie sur le bouton scanner
                 }}
             >
             <Svg width="200" height="200">  
