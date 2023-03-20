@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: "grey",
         margin: 4,
-        fontFamily: "Comfortaa-Regular",
+        fontFamily: "Cabin-Regular",
     },
     salles: {
         fontSize: 15,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         textAlign: "right",
         width: "100%",
         marginBottom: 4,
-        fontFamily: "Comfortaa-Regular",
+        fontFamily: "Cabin-Regular",
     },
     top: {
         flex: 1,
