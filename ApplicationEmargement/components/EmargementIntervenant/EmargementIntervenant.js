@@ -39,9 +39,9 @@ export default function EmargementIntervenant(props) {
     }
 
     return props.session ? (
-        <View style={styles.emargementProf} >
+        <View style={styles.emargementIntervenant} >
             <View>
-                <ListeSessionsIntervenant sessions={props.session}/>
+                <ListeSessionsIntervenant sessions={props.session} emargementEnCours={props.emargementEnCours}/>
             </View>
             <View style={styles.button} >
                 <BoutonEmargement emargement={emargement} setScanEnCours={setScanEnCours} scanEnCours={scanEnCours}/>
@@ -59,10 +59,9 @@ export default function EmargementIntervenant(props) {
 }
 
 const styles = StyleSheet.create({
-    emargementProf: {
+    emargementIntervenant: {
         flex: 1,
         flexDirection: "column",
-        marginTop: '35%',
     },
     text: {
         color: "white",

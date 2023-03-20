@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     eleve: {
-        width: 300,
-        height: 50,
-        backgroundColor: "#24284E",
+        width: "85%",
+        height: 40,
+        backgroundColor: "rgba(70, 70, 70, 1)",
         borderRadius: 15,
-        margin: 10,
+        marginVertical: 7,
         padding: 10,
         flex: 1,
         flexDirection: "row",
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     nom: {
-        fontSize: 20,
-        fontWeight: "bold",
+        fontSize: 15,
         color: "white",
+        fontFamily: "Cabin-Regular",
     },
     check: {
-        width: 20,
-        height: 20,
+        width: 17,
+        height: 17,
     },
 });
