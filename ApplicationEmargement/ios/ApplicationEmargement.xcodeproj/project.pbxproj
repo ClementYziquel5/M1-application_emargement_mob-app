@@ -16,6 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		47F77532BF66494DBD6F35D5 /* Cabin-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 77D3C5685D9C49CF96798D87 /* Cabin-Bold.otf */; };
 		54A98E6F9A7E403EB70F79F4 /* Roboto-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = A0766CD701354AAABE74032F /* Roboto-Black.otf */; };
+		CAFD07CC3338472BA2687802 /* Cabin-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 67CDCF808BDA43A8AFFF2419 /* Cabin-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		77D3C5685D9C49CF96798D87 /* Cabin-Bold.otf */ = {isa = PBXFileReference; name = "Cabin-Bold.otf"; path = "../assets/fonts/Cabin-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A0766CD701354AAABE74032F /* Roboto-Black.otf */ = {isa = PBXFileReference; name = "Roboto-Black.otf"; path = "../assets/fonts/Roboto-Black.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		67CDCF808BDA43A8AFFF2419 /* Cabin-Regular.otf */ = {isa = PBXFileReference; name = "Cabin-Regular.otf"; path = "../assets/fonts/Cabin-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 			children = (
 				77D3C5685D9C49CF96798D87 /* Cabin-Bold.otf */,
 				A0766CD701354AAABE74032F /* Roboto-Black.otf */,
+				67CDCF808BDA43A8AFFF2419 /* Cabin-Regular.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				47F77532BF66494DBD6F35D5 /* Cabin-Bold.otf in Resources */,
 				54A98E6F9A7E403EB70F79F4 /* Roboto-Black.otf in Resources */,
+				CAFD07CC3338472BA2687802 /* Cabin-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
