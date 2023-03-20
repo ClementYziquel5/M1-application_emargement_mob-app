@@ -1,6 +1,16 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-native";
 
+/*
+ * Liste des sessions de l'élève
+ * 
+ * props:
+ * - sessions: liste des sessions de l'élève
+ * - setSessionId: fonction pour modifier l'id de la session en cours
+ * - setSession: fonction pour modifier la session en cours
+ * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
+ * - emargementEnCours: état de l'émargement en cours
+ */
 export default function ListeSessionsEleve(props) {
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
@@ -8,7 +18,11 @@ export default function ListeSessionsEleve(props) {
                 <TouchableOpacity
                     key={session.id}
                     style={styles.session}
-                    onPress={() => console.log('Appuie sur session ' + session.id)}
+                    onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
+                        !props.emargementEnCours && props.setSessionId(session.id);
+                        !props.emargementEnCours && props.setSession([session]);
+                        !props.emargementEnCours && props.setEmargementEnCours(true);
+                    }}
                 >
                     <View style={styles.gauche}>
                         <Text style={styles.matiere}>{session.matiere}</Text>

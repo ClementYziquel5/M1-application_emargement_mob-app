@@ -9,7 +9,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-nati
  * - setSessionId: fonction pour modifier l'id de la session en cours
  * - setSession: fonction pour modifier la session en cours
  * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
- * 
+ * - emargementEnCours: état de l'émargement en cours
  */
 export default function ListeSessionsIntervenant(props) {
     return (
@@ -18,10 +18,10 @@ export default function ListeSessionsIntervenant(props) {
                 <TouchableOpacity
                     key={session.id}
                     style={styles.session}
-                    onPress={() => {
-                        props.setSessionId(session.id);
-                        props.setSession(session);
-                        props.setEmargementEnCours(true);
+                    onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
+                        !props.emargementEnCours && props.setSessionId(session.id);
+                        !props.emargementEnCours && props.setSession([session]);
+                        !props.emargementEnCours && props.setEmargementEnCours(true);
                     }}
                 >
                     <View style={styles.top}>

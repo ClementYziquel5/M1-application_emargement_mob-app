@@ -25,7 +25,7 @@ export default function EmargementIntervenant(props) {
         console.log("session: " + props.session);
     }, []);
 
-    return (
+    return props.session ? (
         <View style={styles.emargementProf} >
             <View>
                 <ListeSessionsIntervenant sessions={props.session}/>
@@ -36,6 +36,11 @@ export default function EmargementIntervenant(props) {
             <ScrollView>
                 <ListeEleves nombre="30"/>
             </ScrollView>
+        </View>)
+        :(
+        <View>
+            <Text style={styles.text}>Chargement...</Text>
+            <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
         </View>
     );
 }

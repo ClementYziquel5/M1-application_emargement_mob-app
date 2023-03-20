@@ -10,12 +10,11 @@ import EmargementIntervenant from "./components/EmargementIntervenant/Emargement
 export default function App() {
     const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
     const [id, setId] = useState("4"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
-    const [loaded, setLoaded] = useState(false);
-    const [sessions, setSessions] = useState([]);
-    const [emargementEnCours, setEmargementEnCours] = useState(false);
-    const [sessionId, setSessionId] = useState();
-    const [session, setSession] = useState([]);
-    const [wait, setWait] = useState(false);
+    const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
+    const [sessions, setSessions] = useState([]); // Liste des sessions
+    const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
+    const [sessionId, setSessionId] = useState(); // Id de la session en cours
+    const [session, setSession] = useState([]); // Session en cours
 
     useEffect(() => {
         fetchSessions(id, isIntervenant,setLoaded,setSessions);
@@ -31,12 +30,12 @@ export default function App() {
                 emargementEnCours ? // Si un émargement est en cours
                     <EmargementIntervenant sessionId={sessionId} session={session}/> // Afficher l'émargement
                 : // Sinon
-                    <ListeSessionsIntervenant sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours}/> // Afficher la liste des sessions
+                    <ListeSessionsIntervenant sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
             : // Sinon (l'utilisateur est un élève)
                 emargementEnCours ? // Si un émargement est en cours
                     <EmargementEleve sessionId={sessionId} session={session}/> // Afficher l'émargement
                 : // Sinon
-                    <ListeSessionsEleve sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours}/> // Afficher la liste des sessions
+                    <ListeSessionsEleve sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
             }
         </View>
     )
