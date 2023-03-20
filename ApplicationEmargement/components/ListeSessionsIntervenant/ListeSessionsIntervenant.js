@@ -1,6 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 
+/*
+ * Liste des sessions de l'intervenant
+ * 
+ * props:
+ * - sessions: liste des sessions de l'intervenant
+ * - setSessionId: fonction pour modifier l'id de la session en cours
+ * - setSession: fonction pour modifier la session en cours
+ * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
+ * 
+ */
 export default function ListeSessionsIntervenant(props) {
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
@@ -8,7 +18,11 @@ export default function ListeSessionsIntervenant(props) {
                 <TouchableOpacity
                     key={session.id}
                     style={styles.session}
-                    onPress={() => console.log('Appuie sur la session ' + session.id)}
+                    onPress={() => {
+                        props.setSessionId(session.id);
+                        props.setSession(session);
+                        props.setEmargementEnCours(true);
+                    }}
                 >
                     <View style={styles.gauche}>
                         <Text style={styles.matiere}>{session.matiere}</Text>

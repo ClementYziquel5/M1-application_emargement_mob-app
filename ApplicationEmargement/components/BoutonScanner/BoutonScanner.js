@@ -1,7 +1,14 @@
 import React from "react";
 import { Text, Dimensions, TouchableOpacity, TouchableHighlight, View, StyleSheet } from "react-native";
 import Svg, { Rect, RadialGradient, Stop, Circle, Mask } from 'react-native-svg';
- 
+
+/*
+ * Bouton pour scanner lancé par l'élève
+ *
+ * props:
+ * - emargement: fonction pour lancer l'émargement
+ * - setDemarrerEmargement: fonction pour modifier l'état de l'émargement en cours
+ */
 export default function BoutonScanner(props){
     return(
         <View style={styles.container}>
