@@ -9,7 +9,7 @@ import EmargementIntervenant from "./components/EmargementIntervenant/Emargement
 
 export default function App() {
     const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("4"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [id, setId] = useState("1"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
@@ -26,17 +26,19 @@ export default function App() {
             <View style={styles.header}>
                 <Header/>
             </View>
-            {isIntervenant ? // Si l'utilisateur est un intervenant
-                emargementEnCours ? // Si un émargement est en cours
-                    <EmargementIntervenant sessionId={sessionId} session={session}/> // Afficher l'émargement
-                : // Sinon
-                    <ListeSessionsIntervenant sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
-            : // Sinon (l'utilisateur est un élève)
-                emargementEnCours ? // Si un émargement est en cours
-                    <EmargementEleve sessionId={sessionId} session={session}/> // Afficher l'émargement
-                : // Sinon
-                    <ListeSessionsEleve sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
-            }
+            <ScrollView>
+                {isIntervenant ? // Si l'utilisateur est un intervenant
+                    emargementEnCours ? // Si un émargement est en cours
+                        <EmargementIntervenant sessionId={sessionId} session={session} emargementEnCours={emargementEnCours}/> // Afficher l'émargement
+                    : // Sinon
+                        <ListeSessionsIntervenant sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
+                : // Sinon (l'utilisateur est un élève)
+                    emargementEnCours ? // Si un émargement est en cours
+                        <EmargementEleve sessionId={sessionId} session={session}/> // Afficher l'émargement
+                    : // Sinon
+                        <ListeSessionsEleve sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
+                }
+            </ScrollView>
         </View>
     )
     :(
@@ -54,9 +56,9 @@ export default function App() {
 async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
     let url = "";
     if(isIntervenant) {
-        url = process.env.REACT_APP_API_URL+ "/v1.0/session/intervenant/" + id;
+        url = process.env.REACT_APP_API_URL + "/v1.0/session/intervenant/" + id;
     } else {
-        url = process.env.REACT_APP_API_URL+ "/v1.0/session/etudiant/" + id;
+        url = process.env.REACT_APP_API_URL + "/v1.0/session/etudiant/" + id;
     }
     return fetch(url)
     .then((response) => response.json())
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#18171E",
     },
     header: {
-        marginBottom: 50,
+        marginBottom: "15%",
     },
     text: {
         color: "white",
