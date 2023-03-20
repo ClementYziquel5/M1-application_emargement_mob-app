@@ -16,7 +16,7 @@ export default function ListeSessionsIntervenant(props) {
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
             {props.sessions.map((session) => (
-                <TouchableSession session={session}/>
+                <TouchableSession key={session.id} session={session}/>
             ))}
         </ScrollView>
     );

@@ -8,12 +8,12 @@ export default function TouchableSession(props) {
     
     return (
         <TouchableOpacity
-            key={session.id}
             style={styles.session}
             onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
-                !session.emargementEnCours && session.setsessionId(session.id);
-                !session.emargementEnCours && session.setsession([session]);
-                !session.emargementEnCours && session.setEmargementEnCours(true);
+                // !session.emargementEnCours && session.setsessionId(session.id);
+                // !session.emargementEnCours && session.setsession([session]);
+                // !session.emargementEnCours && session.setEmargementEnCours(true);
+                console.log("COmposant session.id: " + session.id);
             }}
         >
             <View style={styles.top}>
