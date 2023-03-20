@@ -1,0 +1,5 @@
+Modifier le CSS d'affichage des sessions 
+Routage 
+Mettre la flèche de retour en haut de page
+Clic sur le burger 
+Quand on clic sur la session, créer les pages d'émargement 
