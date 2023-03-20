@@ -55,6 +55,8 @@ export default function ListeSessionsIntervenant(props) {
     );
 }
 
+const fontSizeRef = 15;
+
 const styles = StyleSheet.create({
     ScrollView: {
         alignItems: "center",
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: "grey",
         margin: 4,
+        fontFamily: "Comfortaa-Regular",
     },
     salles: {
         fontSize: 15,
@@ -99,6 +102,7 @@ const styles = StyleSheet.create({
         textAlign: "right",
         width: "100%",
         marginBottom: 4,
+        fontFamily: "Comfortaa-Regular",
     },
     top: {
         flex: 1,
