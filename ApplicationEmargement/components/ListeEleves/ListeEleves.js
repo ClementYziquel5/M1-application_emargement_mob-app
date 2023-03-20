@@ -2,15 +2,17 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 
 export default function ListeEleves(props) {
-    // Liste de 0 à 10
-    const listeEleves = Array.from(Array(parseInt(props.nombre)).keys());
 
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>
-            {listeEleves.map((eleve) => (
-                <View style={styles.eleve} key={eleve}>
-                    <Text style={styles.nom}>NOM Prénom {eleve}</Text>
-                    <Image source={require('./KO.png')} style={styles.check} />
+            {props.listeEleves.map((eleve) => (
+                <View style={styles.eleve} key={eleve.ine}>
+                    <Text style={styles.nom}>{eleve.nom} {eleve.prenom}</Text>
+                    {eleve.presence ?
+                        <Image source={require('./OK.png')} style={styles.check} />
+                    :
+                        <Image source={require('./KO.png')} style={styles.check} />
+                    }
                 </View>
             ))}
         </ScrollView>

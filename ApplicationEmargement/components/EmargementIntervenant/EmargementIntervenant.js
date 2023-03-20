@@ -14,6 +14,7 @@ import ListeEleves from "../ListeEleves/ListeEleves";
  */
 export default function EmargementIntervenant(props) {
     const [demarrerEmargement, setDemarrerEmargement] = useState(false);
+    const [listeEleves, setListeEleves] = useState([]);
 
     // Gérer tout l'émargement ici
     function emargement() {
@@ -21,9 +22,21 @@ export default function EmargementIntervenant(props) {
     }
 
     useEffect(() => {
-        console.log("session id: " + props.sessionId);
-        console.log("session: " + props.session);
+        fetchEtudiants(props.sessionId);
     }, []);
+
+    async function fetchEtudiants(idSession) {
+        let url = process.env.REACT_APP_API_URL+ "/v1.0/session/" + idSession + "/etudiants";
+    
+        return fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+            setListeEleves(json);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
 
     return props.session ? (
         <View style={styles.emargementProf} >
@@ -34,7 +47,7 @@ export default function EmargementIntervenant(props) {
                 <BoutonEmargement emargement={emargement} setDemarrerEmargement={setDemarrerEmargement} />
             </View>
             <ScrollView>
-                <ListeEleves nombre="30"/>
+                <ListeEleves listeEleves={listeEleves}/>
             </ScrollView>
         </View>)
         :(
