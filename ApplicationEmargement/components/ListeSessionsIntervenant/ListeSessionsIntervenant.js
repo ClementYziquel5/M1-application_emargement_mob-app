@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     heure: {
         fontSize: fontSizeRef - 1,
         color: "grey",
-        fontFamily: "Cabin-Regular",
+        fontFamily: "Comfortaa-Regular",
         marginLeft: 4,
     },
     salles: {
