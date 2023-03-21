@@ -29,7 +29,7 @@ export default function App() {
     }, []);
 
     return loaded ? (
-        <NavigationContainer theme={customTheme}>
+        <NavigationContainer theme={theme}>
           <Stack.Navigator
             screenOptions={{
               gestureEnabled: true,
@@ -117,9 +117,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         backgroundColor: "#18171E",
     },
-    header: {
-        marginBottom: "15%",
-    },
     text: {
         color: "white",
         fontSize: 20,
@@ -132,7 +129,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const customTheme = {
+const theme = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
