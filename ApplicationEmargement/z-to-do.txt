@@ -1,8 +1,10 @@
 TODO :
-Routage 
+Partie NFC
 Clic sur le burger 
-Quand on clic sur la session, créer les pages d'émargement 
+Partie authentification
 
 DONE :
 Mettre la flèche de retour en haut de page
 Modifier le CSS d'affichage des sessions
+Routage 
+Quand on clic sur la session, créer les pages d'émargement 
