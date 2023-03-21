@@ -16,13 +16,32 @@ export default function EmargementIntervenant(props) {
     const { navigation } = props;
     props = props.route.params;
 
-    const [demarrerEmargement, setDemarrerEmargement] = useState(false);
+    const [scanEnCours, setScanEnCours] = useState(false);
+    const [listeEleves, setListeEleves] = useState([]);
+
     // Gérer tout l'émargement ici
     function emargement() {
         setScanEnCours(!scanEnCours);
     }
 
-    return props.session ? (
+    useEffect(() => {
+        fetchEtudiants(props.sessionId);
+    }, []);
+
+    async function fetchEtudiants(idSession) {
+        let url = process.env.REACT_APP_API_URL + "/v1.0/session/" + idSession + "/etudiants";
+    
+        return fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+            setListeEleves(json);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+
+    return props.session && listeEleves.length !== 0 ? (
         <View style={styles.emargementIntervenant} >
             <View>
             <ListeSessionsIntervenant sessions={[props.session]}/>
