@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Image, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
@@ -13,7 +13,6 @@ import ListeEleves from "../ListeEleves/ListeEleves";
  * - session: session en cours
  */
 export default function EmargementIntervenant(props) {
-    const { navigation } = props;
     props = props.route.params;
 
     const [scanEnCours, setScanEnCours] = useState(false);
@@ -72,5 +71,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         margin: 10,
         fontFamily:'Cabin-Bold'
+    },
+    spinner: {
+        marginTop: 20,
     },
 });

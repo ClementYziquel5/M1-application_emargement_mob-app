@@ -16,13 +16,11 @@ import ListeSessionsEleve from "./components/ListeSessionsEleve/ListeSessionsEle
 import EmargementIntervenant from "./components/EmargementIntervenant/EmargementIntervenant";
 
 export default function App() {
-    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("4"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [isIntervenant, setIsIntervenant] = useState(false); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("081501761JL"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
-    const [sessionId, setSessionId] = useState(); // Id de la session en cours
-    const [session, setSession] = useState([]); // Session en cours
 
     useEffect(() => {
         fetchSessions(id, isIntervenant,setLoaded,setSessions);
@@ -44,8 +42,6 @@ export default function App() {
                   options={{ headerShown: true }}
                   initialParams={{
                     sessions: sessions,
-                    setSession: setSession,
-                    setSessionId: setSessionId,
                     setEmargementEnCours: setEmargementEnCours,
                     emargementEnCours: emargementEnCours,
                   }}
@@ -54,7 +50,6 @@ export default function App() {
                   name="EmargementIntervenant"
                   component={EmargementIntervenant}
                   options={{ headerShown: true }}
-                  initialParams={{ sessionId: sessionId, session: session }}
                 />
               </>
             ) : (
@@ -65,8 +60,6 @@ export default function App() {
                   options={{ headerShown: true }}
                   initialParams={{
                     sessions: sessions,
-                    setSession: setSession,
-                    setSessionId: setSessionId,
                     setEmargementEnCours: setEmargementEnCours,
                     emargementEnCours: emargementEnCours,
                   }}
@@ -75,7 +68,7 @@ export default function App() {
                   name="EmargementEleve"
                   component={EmargementEleve}
                   options={{ headerShown: true }}
-                  initialParams={{ sessionId: sessionId, session: session }}
+                  initialParams={{ ine: id }}
                 />
               </>
             )}

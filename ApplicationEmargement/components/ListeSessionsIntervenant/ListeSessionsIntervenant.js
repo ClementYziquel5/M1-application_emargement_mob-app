@@ -6,8 +6,6 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-nati
  * 
  * props:
  * - sessions: liste des sessions de l'intervenant
- * - setSessionId: fonction pour modifier l'id de la session en cours
- * - setSession: fonction pour modifier la session en cours
  * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
  * - emargementEnCours: état de l'émargement en cours
  */
@@ -18,6 +16,7 @@ export default function ListeSessionsIntervenant(props) {
     if (props.route && props.route.params && props.route.params.sessions) {
         props = props.route.params;
     }
+
     return props.sessions && (
         <ScrollView contentContainerStyle={styles.ScrollView}>
             {props.sessions.map((session) => (
@@ -25,8 +24,6 @@ export default function ListeSessionsIntervenant(props) {
                     key={session.id}
                     style={styles.session}
                     onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
-                        // !props.emargementEnCours && props.setSessionId(session.id);
-                        // !props.emargementEnCours && props.setSession([session]);
                         !props.emargementEnCours && props.setEmargementEnCours(true);
                         !props.emargementEnCours && navigation.navigate("EmargementIntervenant", { session: session, sessionId: session.id });
                     }}
