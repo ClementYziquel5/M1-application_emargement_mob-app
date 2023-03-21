@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, View, Text, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator, AppRegistry} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+
+AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
 
 const Stack = createStackNavigator();
 
@@ -27,24 +30,48 @@ export default function App() {
 
     return loaded 
     ? (
-        <NavigationContainer>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Header/>
-                </View>
-                {isIntervenant ? // Si l'utilisateur est un intervenant
-                    emargementEnCours ? // Si un émargement est en cours
-                        <EmargementIntervenant sessionId={sessionId} session={session}/> // Afficher l'émargement
-                    : // Sinon
-                        <ListeSessionsIntervenant sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
-                : // Sinon (l'utilisateur est un élève)
-                    emargementEnCours ? // Si un émargement est en cours
-                        <EmargementEleve sessionId={sessionId} session={session}/> // Afficher l'émargement
-                    : // Sinon
-                        <ListeSessionsEleve sessions={sessions} setSession={setSession} setSessionId={setSessionId} setEmargementEnCours={setEmargementEnCours} emargementEnCours={emargementEnCours}/> // Afficher la liste des sessions
-                }
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Header/>
             </View>
-        </NavigationContainer>
+            <NavigationContainer>
+                <Stack.Navigator
+                    screenOptions={{
+                        gestureEnabled: true,
+                    }}
+                >
+                    {isIntervenant ? (
+                        <>
+                            <Stack.Screen
+                                name="ListeSessionsIntervenant"
+                                options={{ headerShown: false }}
+                            >
+                                {props => <ListeSessionsIntervenant {...props} sessions={sessions} />}
+                            </Stack.Screen>
+                            <Stack.Screen
+                                name="EmargementIntervenant"
+                                component={EmargementIntervenant}
+                                options={{ headerShown: false }}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen
+                                name="ListeSessionsEleve"
+                                options={{ headerShown: false }}
+                            >
+                                {props => <ListeSessionsEleve {...props} sessions={sessions} />}
+                            </Stack.Screen>
+                            <Stack.Screen
+                                name="EmargementEleve"
+                                component={EmargementEleve}
+                                options={{ headerShown: false }}
+                            />
+                        </>
+                    )}
+                </Stack.Navigator>
+            </NavigationContainer>
+        </View>
     ) : (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -54,7 +81,6 @@ export default function App() {
             <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
         </View>
     );
-
 }
 
 async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {

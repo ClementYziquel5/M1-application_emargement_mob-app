@@ -19,6 +19,10 @@ target 'ApplicationEmargement' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
   target 'ApplicationEmargementTests' do
     inherit! :complete
     # Pods for testing
