@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
         marginLeft: 4,
         marginTop: 5,
         marginBottom: 4,
+        width: "70%",
     },
     heure: {
         fontSize: fontSizeRef - 1,

@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     emargementEleve: {
         flex: 1,
         flexDirection: "column",
-        marginTop: '35%',
     },
     text: {
         color: "white",

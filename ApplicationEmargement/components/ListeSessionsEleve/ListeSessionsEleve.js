@@ -24,22 +24,27 @@ export default function ListeSessionsEleve(props) {
                         !props.emargementEnCours && props.setEmargementEnCours(true);
                     }}
                 >
-                    <View style={styles.gauche}>
+                    <View style={styles.top}>
                         <Text style={styles.matiere}>{session.matiere}</Text>
                         <Text style={styles.type}>{session.type}</Text>
-                        <Text style={styles.groupes}>
-                            {session.intervenants.map((intervenant) => (
-                                intervenant + "  "
-                            ))}
+                        <Text style={styles.profs}>
+                                {session.intervenants.slice(0, -1).join(", ")}
+                                {session.intervenants.length > 1 ? ", " : ""}
+                                {session.intervenants.slice(-1)}
                         </Text>
-                        <Text style={styles.heure}>{session.heureDebut} - {session.heureFin}</Text>
+                        
                     </View>
-                    <View style={styles.droite}>
-                        <Text style={styles.salles}>
-                            {session.salles.map((salle) => (
-                                salle + "  "
-                            ))}
-                        </Text>
+                    <View style={styles.bottom}>
+                        <View style={styles.gauche}>
+                            <Text style={styles.heure}>{session.heureDebut} - {session.heureFin}</Text>
+                        </View>
+                        <View style={styles.droite}>
+                            <Text style={styles.salles}>
+                                {session.salles.slice(0, -1).join(", ")}
+                                {session.salles.length > 1 ? ", " : ""}
+                                {session.salles.slice(-1)}
+                            </Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
             ))}
@@ -47,50 +52,81 @@ export default function ListeSessionsEleve(props) {
     );
 }
 
+const fontSizeRef = 15;
+
 const styles = StyleSheet.create({
     ScrollView: {
         alignItems: "center",
     },
     session: {
-        width: 300,
-        backgroundColor: "#24284E",
+        width: "85%",
+        backgroundColor: "rgba(29, 31, 49, 1)",
         borderRadius: 15,
         margin: 10,
         padding: 10,
         overflow: "hidden",
-        flexDirection: "row",
+        flexDirection: "column",
+        borderColor: "rgba(68, 68, 68, 0.72)",
+        borderWidth: 1,
     },
     matiere: {
-        fontSize: 20,
-        fontWeight: "bold",
+        fontSize: fontSizeRef + 5,
         color: "white",
+        fontFamily: "Cabin-Bold",
+        marginLeft: 4,
+        marginTop: 0,
+        marginBottom: 0,
     },
     type: {
-        fontSize: 15,
+        fontSize: fontSizeRef - 1,
         color: "grey",
+        fontFamily: "Cabin-Regular",
+        marginLeft: 4,
+        marginTop: 0,
+        marginBottom: 5,
     },
-    groupes: {
-        fontSize: 15,
-        fontWeight: "bold",
+    profs: {
+        fontSize: fontSizeRef + 0,
         color: "white",
+        fontFamily: "Cabin-Bold",
+        marginLeft: 4,
+        marginTop: 5,
+        marginBottom: 4,
+        width: "70%",
     },
     heure: {
-        fontSize: 15,
+        fontSize: fontSizeRef - 1,
         color: "grey",
+        fontFamily: "Cabin-Regular",
+        marginLeft: 4,
     },
     salles: {
-        fontSize: 15,
+        fontSize: fontSizeRef - 1,
         color: "grey",
+        textAlign: "right",
+        width: "100%",
+        fontFamily: "Cabin-Regular",
+        marginLeft: 4,
+    },
+    top: {
+        flex: 1,
+        flexDirection: "column",
+        marginBottom: 5,
+        
+    },
+    bottom: {
+        flex: 1,
+        flexDirection: "row",
+    },
+    droite: {
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "flex-end",
     },
     gauche: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "space-between",
-    },
-    droite: {
-        flex: 1,
+        alignItems: "flex-start",
         justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 10,
     },
 });
