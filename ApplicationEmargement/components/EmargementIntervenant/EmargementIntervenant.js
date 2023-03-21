@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image, ActivityIndicator } from "react-native";
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
@@ -13,6 +13,10 @@ import ListeEleves from "../ListeEleves/ListeEleves";
  * - session: session en cours
  */
 export default function EmargementIntervenant(props) {
+    const { navigation } = props;
+    props = props.route.params;
+    console.log(props.session);
+
     const [demarrerEmargement, setDemarrerEmargement] = useState(false);
 
     // Gérer tout l'émargement ici
@@ -20,15 +24,10 @@ export default function EmargementIntervenant(props) {
         setDemarrerEmargement(!demarrerEmargement);
     }
 
-    useEffect(() => {
-        console.log("session id: " + props.sessionId);
-        console.log("session: " + props.session);
-    }, []);
-
     return props.session ? (
         <View style={styles.emargementProf} >
             <View>
-                <ListeSessionsIntervenant sessions={props.session}/>
+                <ListeSessionsIntervenant sessions={[props.session]}/>
             </View>
             <View style={styles.button} >
                 <BoutonEmargement emargement={emargement} setDemarrerEmargement={setDemarrerEmargement} />

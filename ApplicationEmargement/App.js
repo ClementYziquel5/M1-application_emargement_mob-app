@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, ScrollView, ActivityIndicator, AppRegistry} from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme , ThemeProvider } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
-AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
+//AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
 
 const Stack = createStackNavigator();
 
@@ -28,57 +28,66 @@ export default function App() {
         fetchSessions(id, isIntervenant,setLoaded,setSessions);
     }, []);
 
-    return loaded 
-    ? (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Header/>
-            </View>
-            <NavigationContainer>
-                <Stack.Navigator
-                    screenOptions={{
-                        gestureEnabled: true,
-                    }}
-                >
-                    {isIntervenant ? (
-                        <>
-                            <Stack.Screen
-                                name="ListeSessionsIntervenant"
-                                options={{ headerShown: false }}
-                            >
-                                {props => <ListeSessionsIntervenant {...props} sessions={sessions} />}
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name="EmargementIntervenant"
-                                component={EmargementIntervenant}
-                                options={{ headerShown: false }}
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <Stack.Screen
-                                name="ListeSessionsEleve"
-                                options={{ headerShown: false }}
-                            >
-                                {props => <ListeSessionsEleve {...props} sessions={sessions} />}
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name="EmargementEleve"
-                                component={EmargementEleve}
-                                options={{ headerShown: false }}
-                            />
-                        </>
-                    )}
-                </Stack.Navigator>
-            </NavigationContainer>
-        </View>
+    return loaded ? (
+        <NavigationContainer theme={customTheme}>
+          <Stack.Navigator
+            screenOptions={{
+              gestureEnabled: true,
+              header: (props) => <Header {...props} />,
+            }}
+          >
+            {isIntervenant ? (
+              <>
+                <Stack.Screen
+                  name="ListeSessionsIntervenant"
+                  component={ListeSessionsIntervenant}
+                  options={{ headerShown: true }}
+                  initialParams={{
+                    sessions: sessions,
+                    setSession: setSession,
+                    setSessionId: setSessionId,
+                    setEmargementEnCours: setEmargementEnCours,
+                    emargementEnCours: emargementEnCours,
+                  }}
+                />
+                <Stack.Screen
+                  name="EmargementIntervenant"
+                  component={EmargementIntervenant}
+                  options={{ headerShown: true }}
+                  initialParams={{ sessionId: sessionId, session: session }}
+                />
+              </>
+            ) : (
+              <>
+                <Stack.Screen
+                  name="ListeSessionsEleve"
+                  component={ListeSessionsEleve}
+                  options={{ headerShown: true }}
+                  initialParams={{
+                    sessions: sessions,
+                    setSession: setSession,
+                    setSessionId: setSessionId,
+                    setEmargementEnCours: setEmargementEnCours,
+                    emargementEnCours: emargementEnCours,
+                  }}
+                />
+                <Stack.Screen
+                  name="EmargementEleve"
+                  component={EmargementEleve}
+                  options={{ headerShown: true }}
+                  initialParams={{ sessionId: sessionId, session: session }}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
     ) : (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Header/>
-            </View>
-            <Text style={styles.text}>Chargement...</Text>
-            <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
+          <View style={styles.header}>
+            <Header />
+          </View>
+          <Text style={styles.text}>Chargement...</Text>
+          <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
         </View>
     );
 }
@@ -122,3 +131,12 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 });
+
+const customTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: '#18171E',
+    },
+  };
+  
