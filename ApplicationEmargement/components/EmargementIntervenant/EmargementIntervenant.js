@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
+import EmargementContext from "../../contexts/EmargementContext";
 
 
 /*
@@ -14,10 +15,25 @@ import ListeEleves from "../ListeEleves/ListeEleves";
  * - session: session en cours
  */
 export default function EmargementIntervenant(props) {
+    const {navigation} = props;
     props = props.route.params;
 
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
+    const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+
+    const onBackPress = useCallback(() => {
+        setEmargementEnCours(false);
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault(); // Empêche la navigation
+            onBackPress(); // Exécute la fonction de gestion d'événement
+            navigation.dispatch(e.data.action); // Autorise la navigation
+        });
+        return unsubscribe;
+    }, [navigation, onBackPress]);
 
     // Gérer tout l'émargement ici
     function emargement() {

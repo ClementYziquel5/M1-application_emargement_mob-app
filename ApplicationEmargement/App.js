@@ -32,47 +32,47 @@ export default function App() {
     return loaded ? (
         <EmargementContext.Provider value={{ emargementEnCours, setEmargementEnCours }}>
             <NavigationContainer theme={theme}>
-            <Stack.Navigator
-                screenOptions={{
-                gestureEnabled: true,
-                header: (props) => <Header {...props} />,
-                }}
-            >
-                {isIntervenant ? (
-                <>
-                    <Stack.Screen
-                    name="ListeSessionsIntervenant"
-                    component={ListeSessionsIntervenant}
-                    options={{ headerShown: true }}
-                    initialParams={{
-                        sessions: sessions,
+                <Stack.Navigator
+                    screenOptions={{
+                    gestureEnabled: true,
+                    header: (props) => <Header {...props} />,
                     }}
-                    />
-                    <Stack.Screen
-                    name="EmargementIntervenant"
-                    component={EmargementIntervenant}
-                    options={{ headerShown: true }}
-                    />
-                </>
-                ) : (
-                <>
-                    <Stack.Screen
-                    name="ListeSessionsEleve"
-                    component={ListeSessionsEleve}
-                    options={{ headerShown: true }}
-                    initialParams={{
-                        sessions: sessions,
-                    }}
-                    />
-                    <Stack.Screen
-                    name="EmargementEleve"
-                    component={EmargementEleve}
-                    options={{ headerShown: true }}
-                    initialParams={{ ine: id }}
-                    />
-                </>
-                )}
-            </Stack.Navigator>
+                >
+                    {isIntervenant ? (
+                    <>
+                        <Stack.Screen
+                        name="ListeSessionsIntervenant"
+                        component={ListeSessionsIntervenant}
+                        options={{ headerShown: true }}
+                        initialParams={{
+                            sessions: sessions,
+                        }}
+                        />
+                        <Stack.Screen
+                        name="EmargementIntervenant"
+                        component={EmargementIntervenant}
+                        options={{ headerShown: true }}
+                        />
+                    </>
+                    ) : (
+                    <>
+                        <Stack.Screen
+                        name="ListeSessionsEleve"
+                        component={ListeSessionsEleve}
+                        options={{ headerShown: true }}
+                        initialParams={{
+                            sessions: sessions,
+                        }}
+                        />
+                        <Stack.Screen
+                        name="EmargementEleve"
+                        component={EmargementEleve}
+                        options={{ headerShown: true }}
+                        initialParams={{ ine: id }}
+                        />
+                    </>
+                    )}
+                </Stack.Navigator>
             </NavigationContainer>
         </EmargementContext.Provider>
     ) : (
