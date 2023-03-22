@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 export default function Header() {
@@ -13,9 +13,9 @@ export default function Header() {
 
             
 
-            <View style={styles.hamburgerMenu}>
+            {/* <View style={styles.hamburgerMenu}>
                 <Text>Yohann LE CAM</Text>
-            </View>
+            </View> */}
             <TouchableOpacity
                 onPressOut={() =>{
                     console.log("Click back");

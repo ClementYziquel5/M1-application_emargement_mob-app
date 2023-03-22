@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useContext} from "react";
 import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-native";
+import EmargementContext from "../../contexts/EmargementContext";
 
 /*
  * Liste des sessions de l'élève
@@ -11,6 +12,7 @@ import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-nati
  */
 export default function ListeSessionsEleve(props) {
     const { navigation } = props;
+    const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
 
     // Vérifie si props.route.params est défini, sinon utilisez les props directement
     if (props.route && props.route.params && props.route.params.sessions) {
@@ -24,8 +26,8 @@ export default function ListeSessionsEleve(props) {
                     key={session.id}
                     style={styles.session}
                     onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
-                        !props.emargementEnCours && props.setEmargementEnCours(true);
-                        !props.emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id });
+                        !emargementEnCours && setEmargementEnCours(true);
+                        !emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id });
                     }}
                 >
                     <View style={styles.top}>
