@@ -1,12 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 export default function Header() {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const toggleModal = () => {
+      setIsModalVisible(!isModalVisible);
+    };
+
     return (
         <View style={styles.container}>
-            <Image source={require('./arrow.png')} style={styles.arrow} />
+
+            
+
+            <View style={styles.hamburgerMenu}>
+                <Text>Yohann LE CAM</Text>
+            </View>
+            <TouchableOpacity
+                onPressOut={() =>{
+                    console.log("Click back");
+                }}
+            >
+                <Image source={require('./arrow.png')} style={styles.arrow} />
+            </TouchableOpacity>
+
             <Image source={require('./logo.png')} style={styles.logo} />
-            <Image source={require('./menu.png')} style={styles.menu} />
+
+            <TouchableOpacity
+                onPressOut={() =>{
+                    console.log("Click hamburger");
+                }}
+            >
+                <Image source={require('./menu.png')} style={styles.menu} />
+            </TouchableOpacity>
         </View>
     );
 }
