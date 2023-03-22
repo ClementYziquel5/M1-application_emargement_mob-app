@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
@@ -13,6 +13,8 @@ import ListeEleves from "../ListeEleves/ListeEleves";
  * - session: session en cours
  */
 export default function EmargementIntervenant(props) {
+    props = props.route.params;
+
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
 
@@ -26,7 +28,7 @@ export default function EmargementIntervenant(props) {
     }, []);
 
     async function fetchEtudiants(idSession) {
-        let url = "http://192.168.1.56:8000/api/v1.0/session/" + idSession + "/etudiants";
+        let url = process.env.REACT_APP_API_URL + "/v1.0/session/" + idSession + "/etudiants";
     
         return fetch(url)
         .then((response) => response.json())
@@ -38,10 +40,10 @@ export default function EmargementIntervenant(props) {
         });
     }
 
-    return props.session ? (
+    return props.session && listeEleves.length !== 0 ? (
         <View style={styles.emargementIntervenant} >
             <View>
-                <ListeSessionsIntervenant sessions={props.session} emargementEnCours={props.emargementEnCours}/>
+            <ListeSessionsIntervenant sessions={[props.session]}/>
             </View>
             <View style={styles.button} >
                 <BoutonEmargement emargement={emargement} setScanEnCours={setScanEnCours} scanEnCours={scanEnCours}/>
@@ -49,8 +51,8 @@ export default function EmargementIntervenant(props) {
             <ScrollView>
                 <ListeEleves listeEleves={listeEleves}/>
             </ScrollView>
-        </View>)
-        :(
+        </View>
+        ) : (
         <View>
             <Text style={styles.text}>Chargement...</Text>
             <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
@@ -69,5 +71,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         margin: 10,
         fontFamily:'Cabin-Bold'
+    },
+    spinner: {
+        marginTop: 20,
     },
 });

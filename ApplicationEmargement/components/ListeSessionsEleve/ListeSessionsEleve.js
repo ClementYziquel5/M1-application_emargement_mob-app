@@ -6,12 +6,17 @@ import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-nati
  * 
  * props:
  * - sessions: liste des sessions de l'élève
- * - setSessionId: fonction pour modifier l'id de la session en cours
- * - setSession: fonction pour modifier la session en cours
  * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
  * - emargementEnCours: état de l'émargement en cours
  */
 export default function ListeSessionsEleve(props) {
+    const { navigation } = props;
+
+    // Vérifie si props.route.params est défini, sinon utilisez les props directement
+    if (props.route && props.route.params && props.route.params.sessions) {
+        props = props.route.params;
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>            
             {props.sessions.map((session) => (
@@ -19,9 +24,8 @@ export default function ListeSessionsEleve(props) {
                     key={session.id}
                     style={styles.session}
                     onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
-                        !props.emargementEnCours && props.setSessionId(session.id);
-                        !props.emargementEnCours && props.setSession([session]);
                         !props.emargementEnCours && props.setEmargementEnCours(true);
+                        !props.emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id });
                     }}
                 >
                     <View style={styles.top}>

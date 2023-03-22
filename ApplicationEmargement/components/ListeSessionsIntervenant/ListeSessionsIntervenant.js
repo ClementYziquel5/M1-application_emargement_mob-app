@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 
 /*
@@ -6,22 +6,26 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-nati
  * 
  * props:
  * - sessions: liste des sessions de l'intervenant
- * - setSessionId: fonction pour modifier l'id de la session en cours
- * - setSession: fonction pour modifier la session en cours
  * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
  * - emargementEnCours: état de l'émargement en cours
  */
 export default function ListeSessionsIntervenant(props) {
-    return (
-        <ScrollView contentContainerStyle={styles.ScrollView}>            
+    const { navigation } = props;
+
+    // Vérifie si props.route.params est défini, sinon utilisez les props directement
+    if (props.route && props.route.params && props.route.params.sessions) {
+        props = props.route.params;
+    }
+
+    return props.sessions && (
+        <ScrollView contentContainerStyle={styles.ScrollView}>
             {props.sessions.map((session) => (
                 <TouchableOpacity
                     key={session.id}
                     style={styles.session}
                     onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
-                        !props.emargementEnCours && props.setSessionId(session.id);
-                        !props.emargementEnCours && props.setSession([session]);
                         !props.emargementEnCours && props.setEmargementEnCours(true);
+                        !props.emargementEnCours && navigation.navigate("EmargementIntervenant", { session: session, sessionId: session.id });
                     }}
                 >
                     <View style={styles.top}>
@@ -35,7 +39,6 @@ export default function ListeSessionsIntervenant(props) {
                         {/* Ce code utilise slice() pour récupérer tous les éléments de session.salles, sauf le dernier (on l'ajoute plus tard), et les concatène avec ",  " en utilisant join().
                         Ensuite, il vérifie si session.salles a plus d'un élément, et s'il en a, il ajoute ",  " pour séparer le dernier élément du reste.
                         Enfin, il ajoute le dernier élément de session.salles à la fin de la chaîne de caractères.*/}
-                        
                     </View>
                     <View style={styles.bottom}>
                         <View style={styles.gauche}>

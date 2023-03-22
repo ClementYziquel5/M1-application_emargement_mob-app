@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: "20%",
     },
     arrow: {
         marginTop: 12,
