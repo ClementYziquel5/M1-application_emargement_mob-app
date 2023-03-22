@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
+import {REACT_APP_API_URL} from "@env"
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
@@ -28,7 +29,7 @@ export default function EmargementIntervenant(props) {
     }, []);
 
     async function fetchEtudiants(idSession) {
-        let url = process.env.REACT_APP_API_URL + "/v1.0/session/" + idSession + "/etudiants";
+        let url = `${REACT_APP_API_URL}` + "/v1.0/session/" + idSession + "/etudiants";
     
         return fetch(url)
         .then((response) => response.json())

@@ -2,9 +2,11 @@ import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, ScrollView, ActivityIndicator, AppRegistry} from "react-native";
 import { NavigationContainer, DefaultTheme , ThemeProvider } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {REACT_APP_API_URL} from "@env"
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import EmargementContext from "./contexts/EmargementContext";
+
 
 //AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
 
@@ -87,9 +89,9 @@ export default function App() {
 async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
     let url = "";
     if(isIntervenant) {
-        url = process.env.REACT_APP_API_URL + "/v1.0/session/intervenant/" + id;
+        url = `${REACT_APP_API_URL}` + "/v1.0/session/intervenant/" + id;
     } else {
-        url = process.env.REACT_APP_API_URL + "/v1.0/session/etudiant/" + id;
+        url = `${REACT_APP_API_URL}` + "/v1.0/session/etudiant/" + id;
     }
     return fetch(url)
     .then((response) => response.json())

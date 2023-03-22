@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import {REACT_APP_API_URL} from "@env"
 import BoutonScanner from "../BoutonScanner/BoutonScanner";
 import ListeSessionsEleve from "../ListeSessionsEleve/ListeSessionsEleve";
 
@@ -26,7 +27,7 @@ export default function EmargementEleve(props) {
     }, []);
 
     async function fetchCodeEmargement(idSession, ine) {
-        let url = process.env.REACT_APP_API_URL + "/v1.0/session/" + idSession + "/etudiant/" + ine + "/code_emargement";
+        let url = `${REACT_APP_API_URL}` + "/v1.0/session/" + idSession + "/etudiant/" + ine + "/code_emargement";
     
         return fetch(url)
         .then((response) => response.json())
