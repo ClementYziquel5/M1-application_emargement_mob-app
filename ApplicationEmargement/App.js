@@ -93,15 +93,14 @@ async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
     } else {
         url = `${REACT_APP_API_URL}` + "/v1.0/session/etudiant/" + id;
     }
-    return fetch(url)
-    .then((response) => response.json())
-    .then((json) => {
+    try {
+        const response = await fetch(url);
+        const json = await response.json();
         setSessions(json);
         setLoaded(true);
-    })
-    .catch((error) => {
+    } catch (error) {
         console.error(error);
-    });
+    }
 }
 
 
