@@ -40,6 +40,11 @@ export default function EmargementEleve(props) {
     // Gérer tout l'émargement ici
     function emargement() {
         setScanEnCours(!scanEnCours);
+        
+        NfcManager.start()
+        .then(() => console.log('NFC démarré'))
+        .catch((err) => console.warn('Erreur lors du démarrage de l\'écoute NFC', err));
+    
         if (codeEmargement) {
             const message = Ndef.encodeMessage([Ndef.textRecord(codeEmargement)]);
             NfcManager.setNdefPushMessage(message)
