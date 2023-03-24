@@ -6,6 +6,9 @@ import {REACT_APP_API_URL} from "@env"
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import EmargementContext from "./contexts/EmargementContext";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 
 //AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
@@ -19,8 +22,8 @@ import ListeSessionsEleve from "./components/ListeSessionsEleve/ListeSessionsEle
 import EmargementIntervenant from "./components/EmargementIntervenant/EmargementIntervenant";
 
 export default function App() {
-    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("4"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [isIntervenant, setIsIntervenant] = useState(false); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("081501761JL"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
@@ -102,7 +105,6 @@ async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
         console.error(error);
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {
