@@ -20,6 +20,7 @@ export default function EmargementEleve(props) {
     const [scanEnCours, setScanEnCours] = useState(false);
     const [codeEmargement, setCodeEmargement] = useState(false);
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+    const [loaded, setLoaded] = useState(false);
 
     const onBackPress = useCallback(() => {
         setEmargementEnCours(false);
@@ -50,13 +51,14 @@ export default function EmargementEleve(props) {
         .then((response) => response.json())
         .then((json) => {
             setCodeEmargement(json.code_emargement);
+            setLoaded(true);
         })
         .catch((error) => {
             console.error(error);
         });
     }
 
-    return codeEmargement ? (
+    return loaded ? (
         <View style={styles.emargementEleve} >
             <View>
                 <ListeSessionsEleve sessions={[props.session]} emargementEnCours={props.emargementEnCours}/>

@@ -8,7 +8,7 @@ export default function BoutonEmargement(props){
             onPress={() => props.emargement()}
         >
             <Text style={styles.buttonText}>
-                {props.scanEnCours ? "DÉMARRER LA SESSION" : "TERMINER LA SESSION"}
+                {props.scanEnCours ? "TERMINER LA SESSION" : "DÉMARRER LA SESSION"}
             </Text>
         </TouchableOpacity>
     );

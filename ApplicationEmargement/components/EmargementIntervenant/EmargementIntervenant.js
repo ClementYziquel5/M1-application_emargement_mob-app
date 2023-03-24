@@ -21,6 +21,7 @@ export default function EmargementIntervenant(props) {
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+    const [loaded, setLoaded] = useState(false);
 
     const onBackPress = useCallback(() => {
         setEmargementEnCours(false);
@@ -51,13 +52,14 @@ export default function EmargementIntervenant(props) {
         .then((response) => response.json())
         .then((json) => {
             setListeEleves(json);
+            setLoaded(true);
         })
         .catch((error) => {
             console.error(error);
         });
     }
 
-    return props.session && listeEleves.length !== 0 ? (
+    return loaded ? (
         <View style={styles.emargementIntervenant} >
             <View>
             <ListeSessionsIntervenant sessions={[props.session]}/>
