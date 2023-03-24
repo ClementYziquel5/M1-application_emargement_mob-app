@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
+import NfcManager, {Ndef, NfcEvents} from 'react-native-nfc-manager';
+
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
@@ -20,8 +22,9 @@ export default function EmargementIntervenant(props) {
 
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
-    const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+    const [receivedCodeEmargement, setReceivedCodeEmargement] = useState(null);
     const [loaded, setLoaded] = useState(false);
+    const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
 
     const onBackPress = useCallback(() => {
         setEmargementEnCours(false);
@@ -39,7 +42,36 @@ export default function EmargementIntervenant(props) {
     // Gérer tout l'émargement ici
     function emargement() {
         setScanEnCours(!scanEnCours);
+        if (scanEnCours) {
+            stopNfc();
+        } else {
+            startNfc(onDiscoverTag);
+            console.log('Émargement en cours...');
+            //setReceivedCodeEmargement(':BC#63XNqEev^6:');
+        }
     }
+
+    useEffect(() => {
+        listeEleves.map((eleve) => {
+            if (eleve.code_emargement === receivedCodeEmargement) {
+                console.log('Élève trouvé:', eleve);
+                eleve.presence = true;
+                // Mettre à jour la liste des élèves
+                setListeEleves([...listeEleves]);
+            }
+        });
+    }, [receivedCodeEmargement]);
+
+    function onDiscoverTag(event) {
+        const parsed = Ndef.parse(tag);
+        if (parsed && parsed.records.length > 0) {
+          const message = Ndef.text.decodePayload(parsed.records[0].payload);
+          console.log('Code d\'émargement reçu:', message);
+          setReceivedCodeEmargement(message);
+        }
+    }
+
+
 
     useEffect(() => {
         fetchEtudiants(props.sessionId);
@@ -65,8 +97,13 @@ export default function EmargementIntervenant(props) {
             <ListeSessionsIntervenant sessions={[props.session]}/>
             </View>
             <View style={styles.button} >
-                <BoutonEmargement emargement={emargement} setScanEnCours={setScanEnCours} scanEnCours={scanEnCours}/>
+                <BoutonEmargement emargement={emargement} scanEnCours={scanEnCours}/>
             </View>
+            {receivedCodeEmargement ? (
+                <Text style={styles.text}>Code d'émargement reçu: {receivedCodeEmargement}</Text>    
+            ) : (
+                <Text style={styles.text}>Aucun code d'émargement reçu</Text>
+            )}
             <ScrollView>
                 <ListeEleves listeEleves={listeEleves}/>
             </ScrollView>
@@ -78,6 +115,26 @@ export default function EmargementIntervenant(props) {
         </View>
     );
 }
+
+
+async function startNfc(onDiscoverTag) {
+    try {
+        await NfcManager.start();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, onDiscoverTag);
+    } catch (err) {
+        console.warn('Erreur lors du démarrage de l\'écoute NFC', err);
+    }
+}
+  
+async function stopNfc() {
+    try {
+        await NfcManager.stop();
+        NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+    } catch (err) {
+        console.warn('Erreur lors de l\'arrêt de l\'écoute NFC', err);
+    }
+}
+
 
 const styles = StyleSheet.create({
     emargementIntervenant: {

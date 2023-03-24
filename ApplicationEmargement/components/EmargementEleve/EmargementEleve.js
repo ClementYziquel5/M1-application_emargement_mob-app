@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
+import NfcManager, {Ndef, NfcEvents} from 'react-native-nfc-manager';
+
 import BoutonScanner from "../BoutonScanner/BoutonScanner";
 import ListeSessionsEleve from "../ListeSessionsEleve/ListeSessionsEleve";
 import EmargementContext from "../../contexts/EmargementContext";
@@ -38,7 +40,17 @@ export default function EmargementEleve(props) {
     // Gérer tout l'émargement ici
     function emargement() {
         setScanEnCours(!scanEnCours);
+        if (codeEmargement) {
+            const message = Ndef.encodeMessage([Ndef.textRecord(codeEmargement)]);
+            NfcManager.setNdefPushMessage(message)
+                .then(() => console.log('Prêt à partager le code d\'émargement'))
+                .catch((err) => console.warn('Erreur lors de la configuration du partage NFC', err));
+        }
+        return () => {
+            NfcManager.setNdefPushMessage(null);
+        };
     }
+
     
     useEffect(() => {
         fetchCodeEmargement(props.sessionId, props.ine);
@@ -65,7 +77,10 @@ export default function EmargementEleve(props) {
             </View>
             <Text style={styles.text}>Émargement</Text>
             <View style={styles.button} >
-                <BoutonScanner />
+                <BoutonScanner 
+                    emargement={emargement}
+                    scanEnCours={scanEnCours}
+                />
             </View>
             <View style={styles.codeEmargement} >
                 <Text style={styles.text}>Code d'émargement: {codeEmargement}</Text>
