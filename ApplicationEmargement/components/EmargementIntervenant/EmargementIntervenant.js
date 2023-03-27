@@ -8,8 +8,6 @@ import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsI
 import ListeEleves from "../ListeEleves/ListeEleves";
 import EmargementContext from "../../contexts/EmargementContext";
 
-NfcManager.start();
-
 /*
  * Emargement de l'intervenant
  * 
@@ -69,25 +67,46 @@ export default function EmargementIntervenant(props) {
         });
     }
 
-    async function readNdef() {
-        console.log("Start reading");
-        try {
-            console.log("Start reading in try");
-            await NfcManager.requestTechnology(NfcTech.Ndef);
-            
-            const tag = NfcManager.ndefHandler.getNdefMessage()
-            console.log('Tag found', tag);
-        } catch (ex) {
-            console.warn('Oops!', ex);
-        } finally {
-            NfcManager.cancelTechnologyRequest();
+    useEffect(() => {
+        NfcManager.start();
+        return () => {
+          NfcManager.cancelTechnologyRequest().catch(() => 0);
+          NfcManager.stop();
+        };
+    }, []);
+
+    const ndefHandler = (tag) => {
+        if (tag.ndefMessage && tag.ndefMessage.length > 0) {
+          const parsedRecords = tag.ndefMessage.map((record) => {
+            if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return Ndef.text.decodePayload(record.payload);
+            }
+            return null;
+          }).filter((record) => record !== null);
+    
+          console.log('Parsed records:', parsedRecords);
+        } else {
+          console.log('No NDEF data found on the tag');
         }
-    }
+    };
+
+    const readNFC = async () => {
+        console.log("Read NFC");
+        try {
+          await NfcManager.requestTechnology(NfcTech.Ndef);
+          const tag = await NfcManager.getTag();
+          console.log('Tag info:', tag);
+          ndefHandler(tag);
+          NfcManager.cancelTechnologyRequest();
+        } catch (error) {
+          console.warn('Error reading NFC:', error);
+        }
+    };
 
     // Gérer tout l'émargement ici
     function emargement() {
         setScanEnCours(!scanEnCours);
-        readNdef();
+        readNFC();
     }
 
     return loaded ? (

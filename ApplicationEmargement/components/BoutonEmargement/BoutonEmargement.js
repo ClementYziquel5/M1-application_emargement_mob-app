@@ -5,7 +5,9 @@ export default function BoutonEmargement(props){
     return(
         <TouchableOpacity 
             style={styles.button}
-            onPress={() => props.emargement()}
+            onPressOut={() => {
+                props.emargement()
+            }}
         >
             <Text style={styles.buttonText}>
                 {props.scanEnCours ? "TERMINER LA SESSION" : "DÉMARRER LA SESSION"}
