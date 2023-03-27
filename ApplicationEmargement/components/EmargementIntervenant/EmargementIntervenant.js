@@ -78,39 +78,42 @@ export default function EmargementIntervenant(props) {
 
     const ndefHandler = (tag) => {
         if (tag.ndefMessage && tag.ndefMessage.length > 0) {
-          const parsedRecords = tag.ndefMessage.map((record) => {
+            const parsedRecords = tag.ndefMessage.map((record) => {
             if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
               return Ndef.text.decodePayload(record.payload);
             }
             return null;
-          }).filter((record) => record !== null);
+        }).filter((record) => record !== null);
     
-          console.log('Parsed records:', parsedRecords);
+        console.log('Parsed records:', parsedRecords);
         } else {
-          console.log('No NDEF data found on the tag');
+            console.log('No NDEF data found on the tag');
         }
       };
     
-      const readNFC = async () => {
+    const readNFC = async () => {
         try {
-          await NfcManager.requestTechnology(NfcTech.Ndef);
-          const tag = await NfcManager.getTag();
-          console.log('Tag info:', tag);
-          ndefHandler(tag);
-          NfcManager.cancelTechnologyRequest();
+            await NfcManager.requestTechnology(NfcTech.Ndef);
+            const tag = await NfcManager.getTag();
+            console.log('Tag info:', tag);
+            ndefHandler(tag);
+            NfcManager.cancelTechnologyRequest();
         } catch (error) {
-          console.warn('Error reading NFC:', error);
+            console.warn('Error reading NFC:', error);
         }
       };
     
-      const startContinuousScan = async () => {
+    const startContinuousScan = async () => {
         setScanEnCours(true);
-        await NfcManager.registerTagEvent(readNFC, 'Hold your device over the tag', { isReaderModeEnabled: true });
-      };
+        const intervalId = setInterval(() => {
+            readNFC();
+        }, 1000);
+        setScanInterval(intervalId);
+    };
     
-      const stopContinuousScan = async () => {
+    const stopContinuousScan = async () => {
         setScanEnCours(false);
-        await NfcManager.unregisterTagEvent();
+        clearInterval(scanInterval);
       };
 
     return loaded ? (
