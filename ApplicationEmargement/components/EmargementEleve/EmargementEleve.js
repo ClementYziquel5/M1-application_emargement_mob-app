@@ -4,8 +4,7 @@ import {REACT_APP_API_URL} from "@env"
 import BoutonScanner from "../BoutonScanner/BoutonScanner";
 import ListeSessionsEleve from "../ListeSessionsEleve/ListeSessionsEleve";
 import EmargementContext from "../../contexts/EmargementContext";
-
-
+import { HCESession, NFCTagType4NDEFContentType, NFCTagType4 } from 'react-native-hce';
 /*
  * Emargement de l'élève
  *
@@ -37,7 +36,31 @@ export default function EmargementEleve(props) {
 
     // Gérer tout l'émargement ici
     function emargement() {
-        setScanEnCours(!scanEnCours);
+        if(scanEnCours) { // Si on arrête le scan
+            stopSession();
+            setScanEnCours(false);
+            console.log("Scan arrêté");
+        }else { // Si on démarre le scan
+            startSession();
+            setScanEnCours(true);
+            console.log("Scan démarré");
+        }
+    }
+
+    const startSession = async () => {
+        const tag = new NFCTagType4({
+          type: NFCTagType4NDEFContentType.Text,
+          content: codeEmargement,
+          writable: false
+        });
+      
+        session = await HCESession.getInstance();
+        session.setApplication(tag);
+        await session.setEnabled(true);
+    }
+    
+    const stopSession = async () => {
+        await session.setEnabled(false);
     }
     
     useEffect(() => {
@@ -65,7 +88,7 @@ export default function EmargementEleve(props) {
             </View>
             <Text style={styles.text}>Émargement</Text>
             <View style={styles.button} >
-                <BoutonScanner />
+                <BoutonScanner emargement={emargement} />
             </View>
             <View style={styles.codeEmargement} >
                 <Text style={styles.text}>Code d'émargement: {codeEmargement}</Text>

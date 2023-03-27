@@ -16,7 +16,7 @@ export default function BoutonScanner(props){
                 activeOpacity={0.5}
                 onPressOut= {() => {
                     console.log("Scanner ...");
-                    // fonctions lorsque l'élève appuie sur le bouton scanner
+                    props.emargement();
                 }}
             >
             <Svg width="200" height="200">  
@@ -30,18 +30,6 @@ export default function BoutonScanner(props){
                 </Svg>
             </TouchableOpacity>
         </View>
-        // <View style={styles.container}>
-        //     <TouchableHighlight
-        //         onPress={ () =>console.log("Scanner")}
-        //         underlayColor="#bfbfbf"
-        //     >
-        //            <TouchableOpacity onPress={() => console.log('Scanner')}>
-        //             <Svg height="200" width="200">
-        //                 <Rect x="0" y="0" width="200" height="200" rx="100" fill="#F8F8F8" style={styles.rect}/>
-        //             </Svg>
-        //             </TouchableOpacity>
-        //     </TouchableHighlight>
-        // </View>
     );
 }
 
