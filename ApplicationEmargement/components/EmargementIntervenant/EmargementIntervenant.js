@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
-import NfcManager, {Ndef, NfcEvents} from 'react-native-nfc-manager';
+import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
 
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
 import EmargementContext from "../../contexts/EmargementContext";
 
+NfcManager.start();
 
 /*
  * Emargement de l'intervenant
@@ -39,18 +40,6 @@ export default function EmargementIntervenant(props) {
         return unsubscribe;
     }, [navigation, onBackPress]);
 
-    // Gérer tout l'émargement ici
-    function emargement() {
-        setScanEnCours(!scanEnCours);
-        if (scanEnCours) {
-            stopNfc();
-        } else {
-            startNfc(onDiscoverTag);
-            console.log('Émargement en cours...');
-            //setReceivedCodeEmargement(':BC#63XNqEev^6:');
-        }
-    }
-
     useEffect(() => {
         listeEleves.map((eleve) => {
             if (eleve.code_emargement === receivedCodeEmargement) {
@@ -61,17 +50,6 @@ export default function EmargementIntervenant(props) {
             }
         });
     }, [receivedCodeEmargement]);
-
-    function onDiscoverTag(event) {
-        const parsed = Ndef.parse(tag);
-        if (parsed && parsed.records.length > 0) {
-          const message = Ndef.text.decodePayload(parsed.records[0].payload);
-          console.log('Code d\'émargement reçu:', message);
-          setReceivedCodeEmargement(message);
-        }
-    }
-
-
 
     useEffect(() => {
         fetchEtudiants(props.sessionId);
@@ -89,6 +67,27 @@ export default function EmargementIntervenant(props) {
         .catch((error) => {
             console.error(error);
         });
+    }
+
+    async function readNdef() {
+        console.log("Start reading");
+        try {
+            console.log("Start reading in try");
+            await NfcManager.requestTechnology(NfcTech.Ndef);
+            
+            const tag = NfcManager.ndefHandler.getNdefMessage()
+            console.log('Tag found', tag);
+        } catch (ex) {
+            console.warn('Oops!', ex);
+        } finally {
+            NfcManager.cancelTechnologyRequest();
+        }
+    }
+
+    // Gérer tout l'émargement ici
+    function emargement() {
+        setScanEnCours(!scanEnCours);
+        readNdef();
     }
 
     return loaded ? (

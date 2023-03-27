@@ -16,7 +16,7 @@ export default function BoutonScanner(props){
                 activeOpacity={0.5}
                 onPressOut= {() => {
                     console.log("Scanner ...");
-                    props.emargement();
+                    //props.emargement();
                 }}
             >
             <Svg width="200" height="200">  
