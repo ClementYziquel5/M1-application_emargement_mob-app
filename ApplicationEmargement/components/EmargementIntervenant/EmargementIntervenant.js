@@ -24,6 +24,7 @@ export default function EmargementIntervenant(props) {
     const [receivedCodeEmargement, setReceivedCodeEmargement] = useState(null);
     const [loaded, setLoaded] = useState(false);
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+    const [scanInterval, setScanInterval] = useState(null);
 
     const onBackPress = useCallback(() => {
         setEmargementEnCours(false);
@@ -86,6 +87,7 @@ export default function EmargementIntervenant(props) {
         }).filter((record) => record !== null);
     
         console.log('Parsed records:', parsedRecords);
+        setReceivedCodeEmargement(parsedRecords[0]);
         } else {
             console.log('No NDEF data found on the tag');
         }
@@ -95,7 +97,6 @@ export default function EmargementIntervenant(props) {
         try {
             await NfcManager.requestTechnology(NfcTech.Ndef);
             const tag = await NfcManager.getTag();
-            console.log('Tag info:', tag);
             ndefHandler(tag);
             NfcManager.cancelTechnologyRequest();
         } catch (error) {
@@ -107,14 +108,14 @@ export default function EmargementIntervenant(props) {
         setScanEnCours(true);
         const intervalId = setInterval(() => {
             readNFC();
-        }, 1000);
+        }, 500);
         setScanInterval(intervalId);
     };
     
     const stopContinuousScan = async () => {
         setScanEnCours(false);
         clearInterval(scanInterval);
-      };
+    };
 
     return loaded ? (
         <View style={styles.emargementIntervenant} >
@@ -139,25 +140,6 @@ export default function EmargementIntervenant(props) {
             <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
         </View>
     );
-}
-
-
-async function startNfc(onDiscoverTag) {
-    try {
-        await NfcManager.start();
-        NfcManager.setEventListener(NfcEvents.DiscoverTag, onDiscoverTag);
-    } catch (err) {
-        console.warn('Erreur lors du démarrage de l\'écoute NFC', err);
-    }
-}
-  
-async function stopNfc() {
-    try {
-        await NfcManager.stop();
-        NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
-    } catch (err) {
-        console.warn('Erreur lors de l\'arrêt de l\'écoute NFC', err);
-    }
 }
 
 

@@ -8,6 +8,7 @@ import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import { LogBox } from "react-native";
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+LogBox.ignoreLogs(["Error reading NFC"]);
 
 
 //AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
