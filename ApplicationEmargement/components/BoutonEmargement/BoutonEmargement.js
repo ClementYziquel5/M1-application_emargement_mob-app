@@ -2,15 +2,24 @@ import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function BoutonEmargement(props){
-    return(
+    return props.scanEnCours ? (
         <TouchableOpacity 
             style={styles.button}
             onPressOut={() => {
-                props.emargement()
-            }}
-        >
+                props.stopContinuousScan()
+            }}>
             <Text style={styles.buttonText}>
-                {props.scanEnCours ? "TERMINER LA SESSION" : "DÉMARRER LA SESSION"}
+                TERMINER LA SESSION
+            </Text>
+        </TouchableOpacity>
+    ) : (
+        <TouchableOpacity 
+            style={styles.button}
+            onPressOut={() => {
+                props.startContinuousScan()
+            }}>
+            <Text style={styles.buttonText}>
+                DEMARER LA SESSION
             </Text>
         </TouchableOpacity>
     );

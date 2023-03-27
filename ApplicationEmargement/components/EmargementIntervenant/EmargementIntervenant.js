@@ -75,6 +75,7 @@ export default function EmargementIntervenant(props) {
         };
     }, []);
 
+
     const ndefHandler = (tag) => {
         if (tag.ndefMessage && tag.ndefMessage.length > 0) {
           const parsedRecords = tag.ndefMessage.map((record) => {
@@ -88,10 +89,9 @@ export default function EmargementIntervenant(props) {
         } else {
           console.log('No NDEF data found on the tag');
         }
-    };
-
-    const readNFC = async () => {
-        console.log("Read NFC");
+      };
+    
+      const readNFC = async () => {
         try {
           await NfcManager.requestTechnology(NfcTech.Ndef);
           const tag = await NfcManager.getTag();
@@ -101,13 +101,17 @@ export default function EmargementIntervenant(props) {
         } catch (error) {
           console.warn('Error reading NFC:', error);
         }
-    };
-
-    // Gérer tout l'émargement ici
-    function emargement() {
-        setScanEnCours(!scanEnCours);
-        readNFC();
-    }
+      };
+    
+      const startContinuousScan = async () => {
+        setScanEnCours(true);
+        await NfcManager.registerTagEvent(readNFC, 'Hold your device over the tag', { isReaderModeEnabled: true });
+      };
+    
+      const stopContinuousScan = async () => {
+        setScanEnCours(false);
+        await NfcManager.unregisterTagEvent();
+      };
 
     return loaded ? (
         <View style={styles.emargementIntervenant} >
@@ -115,7 +119,7 @@ export default function EmargementIntervenant(props) {
             <ListeSessionsIntervenant sessions={[props.session]}/>
             </View>
             <View style={styles.button} >
-                <BoutonEmargement emargement={emargement} scanEnCours={scanEnCours}/>
+                <BoutonEmargement startContinuousScan={startContinuousScan} stopContinuousScan={stopContinuousScan} scanEnCours={scanEnCours}/>
             </View>
             {receivedCodeEmargement ? (
                 <Text style={styles.text}>Code d'émargement reçu: {receivedCodeEmargement}</Text>    
