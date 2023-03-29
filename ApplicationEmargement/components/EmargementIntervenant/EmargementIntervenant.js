@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
+import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
+
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
 import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
 import ListeEleves from "../ListeEleves/ListeEleves";
 import EmargementContext from "../../contexts/EmargementContext";
-
 
 /*
  * Emargement de l'intervenant
@@ -20,8 +21,10 @@ export default function EmargementIntervenant(props) {
 
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
-    const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+    const [receivedCodeEmargement, setReceivedCodeEmargement] = useState(null);
     const [loaded, setLoaded] = useState(false);
+    const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
+    const [scanInterval, setScanInterval] = useState(null);
 
     const onBackPress = useCallback(() => {
         setEmargementEnCours(false);
@@ -36,10 +39,16 @@ export default function EmargementIntervenant(props) {
         return unsubscribe;
     }, [navigation, onBackPress]);
 
-    // Gérer tout l'émargement ici
-    function emargement() {
-        setScanEnCours(!scanEnCours);
-    }
+    useEffect(() => {
+        listeEleves.map((eleve) => {
+            if (eleve.code_emargement === receivedCodeEmargement) {
+                console.log('Élève trouvé:', eleve);
+                eleve.presence = true;
+                // Mettre à jour la liste des élèves
+                setListeEleves([...listeEleves]);
+            }
+        });
+    }, [receivedCodeEmargement]);
 
     useEffect(() => {
         fetchEtudiants(props.sessionId);
@@ -59,14 +68,68 @@ export default function EmargementIntervenant(props) {
         });
     }
 
+    useEffect(() => {
+        NfcManager.start();
+        return () => {
+          NfcManager.cancelTechnologyRequest().catch(() => 0);
+          NfcManager.stop();
+        };
+    }, []);
+
+
+    const ndefHandler = (tag) => {
+        if (tag.ndefMessage && tag.ndefMessage.length > 0) {
+            const parsedRecords = tag.ndefMessage.map((record) => {
+            if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return Ndef.text.decodePayload(record.payload);
+            }
+            return null;
+        }).filter((record) => record !== null);
+    
+        console.log('Parsed records:', parsedRecords);
+        setReceivedCodeEmargement(parsedRecords[0]);
+        } else {
+            console.log('No NDEF data found on the tag');
+        }
+      };
+    
+    const readNFC = async () => {
+        try {
+            await NfcManager.requestTechnology(NfcTech.Ndef);
+            const tag = await NfcManager.getTag();
+            ndefHandler(tag);
+            NfcManager.cancelTechnologyRequest();
+        } catch (error) {
+            console.warn('Error reading NFC:', error);
+        }
+      };
+    
+    const startContinuousScan = async () => {
+        setScanEnCours(true);
+        const intervalId = setInterval(() => {
+            readNFC();
+        }, 500);
+        setScanInterval(intervalId);
+    };
+    
+    const stopContinuousScan = async () => {
+        setScanEnCours(false);
+        clearInterval(scanInterval);
+    };
+
     return loaded ? (
         <View style={styles.emargementIntervenant} >
             <View>
             <ListeSessionsIntervenant sessions={[props.session]}/>
             </View>
             <View style={styles.button} >
-                <BoutonEmargement emargement={emargement} setScanEnCours={setScanEnCours} scanEnCours={scanEnCours}/>
+                <BoutonEmargement startContinuousScan={startContinuousScan} stopContinuousScan={stopContinuousScan} scanEnCours={scanEnCours}/>
             </View>
+            {receivedCodeEmargement ? (
+                <Text style={styles.text}>Code d'émargement reçu: {receivedCodeEmargement}</Text>    
+            ) : (
+                <Text style={styles.text}>Aucun code d'émargement reçu</Text>
+            )}
             <ScrollView>
                 <ListeEleves listeEleves={listeEleves}/>
             </ScrollView>
@@ -78,6 +141,7 @@ export default function EmargementIntervenant(props) {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     emargementIntervenant: {
