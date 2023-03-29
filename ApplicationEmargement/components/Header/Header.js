@@ -10,12 +10,7 @@ export default function Header(props) {
 
     return (
         <View style={styles.container}>
-
-            
-
-            {/* <View style={styles.hamburgerMenu}>
-                <Text>Yohann LE CAM</Text>
-            </View> */}
+            {props.defaultPage ? null : 
             <TouchableOpacity
                 disabled={false}
                 onPressOut={() =>{
@@ -26,7 +21,7 @@ export default function Header(props) {
                 }}
             >
                 <Image source={require('./arrow.png')} style={styles.arrow}/>
-            </TouchableOpacity>
+            </TouchableOpacity>}
 
             <Image source={require('./logo.png')} style={styles.logo} />
 
