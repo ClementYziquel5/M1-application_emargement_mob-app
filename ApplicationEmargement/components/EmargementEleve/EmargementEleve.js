@@ -66,6 +66,7 @@ export default function EmargementEleve(props) {
     
     useEffect(() => {
         fetchCodeEmargement(props.sessionId, props.ine);
+        props.setDefaultPage(false);
     }, []);
 
     async function fetchCodeEmargement(idSession, ine) {
