@@ -43,11 +43,9 @@ export default function EmargementIntervenant(props) {
     function findEleveByCodeEmargement(codeEmargement) {
         listeEleves.map((eleve) => {
             if (eleve.code_emargement === codeEmargement) {
-                console.log('Élève trouvé:', eleve);
                 eleve.presence = true;
                 // Mettre à jour la liste des élèves
                 setListeEleves([...listeEleves]);
-                console.log(listeEleves[0]);
             }
         });
     }
@@ -64,7 +62,6 @@ export default function EmargementIntervenant(props) {
                 presence: eleve.presence
             }
         })
-        console.log(prez);
         fetch(url, {
             method: 'PUT',
             headers: {
@@ -75,8 +72,9 @@ export default function EmargementIntervenant(props) {
                 presence: prez
             })
         }).then(() => {
-            console.log("Presences envoyées");
-            //props.navigation.navigate("ListeSessionsIntervenant");
+            fetchEtudiants(props.sessionId);
+            //props.setDefaultPage(true);
+            //navigation.goBack();
         });
     }
 
