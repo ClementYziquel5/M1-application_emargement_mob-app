@@ -16,7 +16,7 @@ export default function BoutonScanner(props){
                 activeOpacity={0.5}
                 onPressOut= {() => {
                     console.log("Scanner ...");
-                    //props.emargement();
+                    props.emargement();
                 }}
             >
             <Svg width="200" height="200">  
@@ -26,9 +26,7 @@ export default function BoutonScanner(props){
                         <Stop offset="1" stopColor="rgb(150,150,150)" />
                     </RadialGradient>
                     <Rect x="0" y="0" width="200" height="200" rx="100" fill="url(#grad)" />
-                    <Text style={styles.buttonText}>
-                        {props.scanEnCours ? "Scan en cours" : "Scanner"}
-                    </Text>
+                    <Text style={styles.buttonText}>SCANNER</Text>
                 </Svg>
             </TouchableOpacity>
         </View>
