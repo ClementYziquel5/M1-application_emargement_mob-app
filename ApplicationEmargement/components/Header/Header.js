@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
-export default function Header() {
+export default function Header(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const toggleModal = () => {
@@ -17,11 +17,15 @@ export default function Header() {
                 <Text>Yohann LE CAM</Text>
             </View> */}
             <TouchableOpacity
+                disabled={false}
                 onPressOut={() =>{
-                    console.log("Click back");
+                    if(!props.defaultPage) {
+                        props.setDefaultPage(true);
+                        props.navigation.goBack();
+                    } 
                 }}
             >
-                <Image source={require('./arrow.png')} style={styles.arrow} />
+                <Image source={require('./arrow.png')} style={styles.arrow}/>
             </TouchableOpacity>
 
             <Image source={require('./logo.png')} style={styles.logo} />
@@ -59,5 +63,4 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
     },
-    
 });

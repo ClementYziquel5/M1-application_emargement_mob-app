@@ -78,6 +78,7 @@ export default function EmargementEleve(props) {
     
     useEffect(() => {
         fetchCodeEmargement(props.sessionId, props.ine);
+        props.setDefaultPage(false);
     }, []);
 
     async function fetchCodeEmargement(idSession, ine) {
@@ -101,7 +102,7 @@ export default function EmargementEleve(props) {
             </View>
             <Text style={styles.text}>Émargement</Text>
             <View style={styles.button} >
-                <BoutonScanner emargement={emargement} />
+                <BoutonScanner emargement={emargement} scanEnCours={scanEnCours} />
             </View>
             <View style={styles.codeEmargement} >
                 <Text style={styles.text}>Code d'émargement: {codeEmargement}</Text>

@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, ScrollView, ActivityIndicator, AppRegistry} from "react-native";
-import { NavigationContainer, DefaultTheme , ThemeProvider } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme , ThemeProvider, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {REACT_APP_API_URL} from "@env"
-import 'react-native-gesture-handler';
-import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import { LogBox } from "react-native";
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 LogBox.ignoreLogs(["Error reading NFC"]);
+LogBox.ignoreLogs(["Can't perform a React state update on an unmounted component."]);
+LogBox.ignoreLogs(["Non-serializable values were found in the navigation state."])
 
 
 //AppRegistry.registerComponent(App, () => gestureHandlerRootHOC(App));
@@ -24,11 +24,13 @@ import EmargementContext from "./contexts/EmargementContext";
 
 export default function App() {
     const [isConnected, setIsConnected] = useState(true); // Pour l'instant en dur
-    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("10"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [defaultPage, setDefaultPage] = useState(true); // Si on est sur la page d'acceuil, true, sinon false, c'est pour gérer l'affichage de la flèche du header
+    const [isIntervenant, setIsIntervenant] = useState(false); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("081501761JL"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
+    
 
     useEffect(() => {
         fetchSessions(id, isIntervenant,setLoaded,setSessions);
@@ -40,7 +42,7 @@ export default function App() {
                 <Stack.Navigator
                     screenOptions={{
                     gestureEnabled: true,
-                    header: (props) => <Header {...props} />,
+                    header: (props) => <Header {...props} navigation={props.navigation} defaultPage={defaultPage} setDefaultPage={setDefaultPage}/>,
                     }}
                 >
                     {isIntervenant ? (
@@ -73,7 +75,12 @@ export default function App() {
                         name="EmargementEleve"
                         component={EmargementEleve}
                         options={{ headerShown: true }}
-                        initialParams={{ ine: id }}
+                        initialParams={{
+                            ine: id,
+                            setDefaultPage: () => {
+                                setDefaultPage()
+                            },
+                        }}
                         />
                     </>
                     )}
