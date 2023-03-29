@@ -51,6 +51,7 @@ export default function EmargementIntervenant(props) {
     }
 
     useEffect(() => {
+        props.setDefaultPage(false);
         fetchEtudiants(props.sessionId);
     }, []);
 
