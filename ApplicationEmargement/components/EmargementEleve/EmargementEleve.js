@@ -21,6 +21,8 @@ export default function EmargementEleve(props) {
     const [codeEmargement, setCodeEmargement] = useState(false);
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
     const [loaded, setLoaded] = useState(false);
+    const [session, setSession] = useState(null);
+
 
     const onBackPress = useCallback(() => {
         setEmargementEnCours(false);
@@ -29,6 +31,7 @@ export default function EmargementEleve(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
+            stopSession();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation
         });
@@ -50,19 +53,28 @@ export default function EmargementEleve(props) {
 
     const startSession = async () => {
         const tag = new NFCTagType4({
-          type: NFCTagType4NDEFContentType.Text,
-          content: codeEmargement,
-          writable: false
+            type: NFCTagType4NDEFContentType.Text,
+            content: codeEmargement,
+            writable: false
         });
       
-        session = await HCESession.getInstance();
-        session.setApplication(tag);
-        await session.setEnabled(true);
-    }
+        const newSession = await HCESession.getInstance();
+        newSession.setApplication(tag);
+        await newSession.setEnabled(true);
+        setSession(newSession); // Update the session state variable
+    };
+      
     
     const stopSession = async () => {
-        await session.setEnabled(false);
-    }
+        if (session) { // Check if session is not null
+            try {
+                await session.setEnabled(false);
+                console.log("Session stopped");
+            } catch (error) {
+                console.error("Error stopping the session:", error);
+            }
+        }
+    };
     
     useEffect(() => {
         fetchCodeEmargement(props.sessionId, props.ine);
