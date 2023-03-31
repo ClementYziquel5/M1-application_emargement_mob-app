@@ -21,7 +21,7 @@ export default function EmargementIntervenant(props) {
 
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
-    const [receivedCodeEmargement, setReceivedCodeEmargement] = useState(null);
+    //const [receivedCodeEmargement, setReceivedCodeEmargement] = useState(null);
     const [loaded, setLoaded] = useState(false);
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
     const [scanInterval, setScanInterval] = useState(null);
@@ -33,26 +33,51 @@ export default function EmargementIntervenant(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
+            stopContinuousScan();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation
         });
         return unsubscribe;
     }, [navigation, onBackPress]);
 
-    useEffect(() => {
+    function findEleveByCodeEmargement(codeEmargement) {
         listeEleves.map((eleve) => {
-            if (eleve.code_emargement === receivedCodeEmargement) {
-                console.log('Élève trouvé:', eleve);
+            if (eleve.code_emargement === codeEmargement) {
                 eleve.presence = true;
                 // Mettre à jour la liste des élèves
                 setListeEleves([...listeEleves]);
             }
         });
-    }, [receivedCodeEmargement]);
+    }
 
     useEffect(() => {
+        props.setDefaultPage(false);
         fetchEtudiants(props.sessionId);
     }, []);
+
+    async function sendPresences(){
+        let url = `${REACT_APP_API_URL}` + "/v1.0/session/miseajour/presence";
+        let prez = listeEleves.map((eleve) => {
+            return {
+                ine: eleve.ine,
+                presence: eleve.presence
+            }
+        })
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: props.sessionId,
+                presence: prez
+            })
+        }).then(() => {
+            fetchEtudiants(props.sessionId);
+            //props.setDefaultPage(true);
+            //navigation.goBack();
+        });
+    }
 
     async function fetchEtudiants(idSession) {
         let url = `${REACT_APP_API_URL}` + "/v1.0/session/" + idSession + "/etudiants";
@@ -72,7 +97,6 @@ export default function EmargementIntervenant(props) {
         NfcManager.start();
         return () => {
           NfcManager.cancelTechnologyRequest().catch(() => 0);
-          NfcManager.stop();
         };
     }, []);
 
@@ -85,9 +109,9 @@ export default function EmargementIntervenant(props) {
             }
             return null;
         }).filter((record) => record !== null);
-    
-        console.log('Parsed records:', parsedRecords);
-        setReceivedCodeEmargement(parsedRecords[0]);
+
+        findEleveByCodeEmargement(parsedRecords[0]);
+
         } else {
             console.log('No NDEF data found on the tag');
         }
@@ -102,7 +126,7 @@ export default function EmargementIntervenant(props) {
         } catch (error) {
             console.warn('Error reading NFC:', error);
         }
-      };
+    };
     
     const startContinuousScan = async () => {
         setScanEnCours(true);
@@ -115,6 +139,7 @@ export default function EmargementIntervenant(props) {
     const stopContinuousScan = async () => {
         setScanEnCours(false);
         clearInterval(scanInterval);
+        sendPresences();
     };
 
     return loaded ? (
@@ -125,11 +150,6 @@ export default function EmargementIntervenant(props) {
             <View style={styles.button} >
                 <BoutonEmargement startContinuousScan={startContinuousScan} stopContinuousScan={stopContinuousScan} scanEnCours={scanEnCours}/>
             </View>
-            {receivedCodeEmargement ? (
-                <Text style={styles.text}>Code d'émargement reçu: {receivedCodeEmargement}</Text>    
-            ) : (
-                <Text style={styles.text}>Aucun code d'émargement reçu</Text>
-            )}
             <ScrollView>
                 <ListeEleves listeEleves={listeEleves}/>
             </ScrollView>

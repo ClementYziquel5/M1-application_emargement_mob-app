@@ -23,6 +23,8 @@ target 'ApplicationEmargement' do
 
   pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
+  pod 'react-native-hce', :path => '../node_modules/react-native-hce'
+
   target 'ApplicationEmargementTests' do
     inherit! :complete
     # Pods for testing
