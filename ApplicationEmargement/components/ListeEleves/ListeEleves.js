@@ -1,7 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 
-export default function ListeEleves(props) {
+/*
+ * Liste des étudiants participant à la session
+ *
+ * props:
+ * - listeEtudiants: liste des étudiants
+ */
+export default function ListeEtudiants(props) {
 
     return (
         <ScrollView contentContainerStyle={styles.ScrollView}>

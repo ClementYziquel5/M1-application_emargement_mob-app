@@ -7,7 +7,7 @@ import Svg, { Rect, RadialGradient, Stop, Circle, Mask } from 'react-native-svg'
  *
  * props:
  * - emargement: fonction pour lancer l'émargement
- * - setDemarrerEmargement: fonction pour modifier l'état de l'émargement en cours
+ * - scanEnCours: booléen indiquant si un scan est en cours
  */
 export default function BoutonScanner(props){
     return(

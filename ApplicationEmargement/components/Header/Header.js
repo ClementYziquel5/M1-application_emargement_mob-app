@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
+/*
+ * Header de l'application
+ *
+ * props: 
+ * - defaultPage: booléen indiquant si la page est la page par défaut
+ * - setDefaultPage: fonction pour remettre la page par défaut
+ * - navigation: navigation
+ */
 export default function Header(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 

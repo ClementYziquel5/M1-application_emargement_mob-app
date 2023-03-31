@@ -6,12 +6,19 @@ import BoutonScanner from "../BoutonScanner/BoutonScanner";
 import ListeSessionsEleve from "../ListeSessionsEleve/ListeSessionsEleve";
 import EmargementContext from "../../contexts/EmargementContext";
 import { HCESession, NFCTagType4NDEFContentType, NFCTagType4 } from 'react-native-hce';
+
 /*
  * Emargement de l'élève
  *
  * props:
+ * - navigation: navigation
+ * 
+ * props.route.params:
  * - sessionId: id de la session en cours
  * - session: session en cours
+ * - ine: ine de l'élève
+ * - setDefaultPage: fonction pour remettre la page par défaut
+ * - emargementEnCours: booléen pour savoir si l'émargement est en cours
  */
 export default function EmargementEleve(props) {
     const {navigation} = props;
@@ -31,7 +38,7 @@ export default function EmargementEleve(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
-            stopSession();
+            stopScan();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation
         });
@@ -41,17 +48,17 @@ export default function EmargementEleve(props) {
     // Gérer tout l'émargement ici
     function emargement() {
         if(scanEnCours) { // Si on arrête le scan
-            stopSession();
+            stopScan();
             setScanEnCours(false);
             console.log("Scan arrêté");
         }else { // Si on démarre le scan
-            startSession();
+            startScan();
             setScanEnCours(true);
             console.log("Scan démarré");
         }
     }
 
-    const startSession = async () => {
+    const startScan = async () => {
         const tag = new NFCTagType4({
             type: NFCTagType4NDEFContentType.Text,
             content: codeEmargement,
@@ -65,7 +72,7 @@ export default function EmargementEleve(props) {
     };
       
     
-    const stopSession = async () => {
+    const stopScan = async () => {
         if (session) { // Check if session is not null
             try {
                 await session.setEnabled(false);
@@ -104,9 +111,6 @@ export default function EmargementEleve(props) {
             <View style={styles.button} >
                 <BoutonScanner emargement={emargement} scanEnCours={scanEnCours} />
             </View>
-            {/* <View style={styles.codeEmargement} >
-                <Text style={styles.text}>Code d'émargement: {codeEmargement}</Text>
-            </View> */}
         </View>
         ) : (
             <View>

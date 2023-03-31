@@ -1,6 +1,14 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
+/*
+ * Bouton pour démarrer ou terminer une session d'emargement
+ *
+ * props:
+ * - scanEnCours: booléen indiquant si une session d'emargement est en cours
+ * - startContinuousScan: fonction pour démarrer une session d'emargement
+ * - stopContinuousScan: fonction pour terminer une session d'emargement
+ */
 export default function BoutonEmargement(props){
     return props.scanEnCours ? (
         <TouchableOpacity 

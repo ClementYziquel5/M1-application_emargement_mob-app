@@ -6,9 +6,10 @@ import EmargementContext from "../../contexts/EmargementContext";
  * Liste des sessions de l'intervenant
  * 
  * props:
+ * - navigation: navigation
+ * 
+ * props.route.params:
  * - sessions: liste des sessions de l'intervenant
- * - setEmargementEnCours: fonction pour modifier l'état de l'émargement en cours
- * - emargementEnCours: état de l'émargement en cours
  */
 export default function ListeSessionsIntervenant(props) {
     const { navigation } = props;

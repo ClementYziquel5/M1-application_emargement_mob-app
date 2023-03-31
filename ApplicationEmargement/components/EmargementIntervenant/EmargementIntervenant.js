@@ -12,8 +12,12 @@ import EmargementContext from "../../contexts/EmargementContext";
  * Emargement de l'intervenant
  * 
  * props:
+ * - navigation: navigation
+ * 
+ * props.route.params:
  * - sessionId: id de la session en cours
  * - session: session en cours
+ * - setDefaultPage: fonction pour remettre la page par défaut
  */
 export default function EmargementIntervenant(props) {
     const {navigation} = props;
@@ -21,7 +25,6 @@ export default function EmargementIntervenant(props) {
 
     const [scanEnCours, setScanEnCours] = useState(false);
     const [listeEleves, setListeEleves] = useState([]);
-    //const [receivedCodeEmargement, setReceivedCodeEmargement] = useState(null);
     const [loaded, setLoaded] = useState(false);
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
     const [scanInterval, setScanInterval] = useState(null);
