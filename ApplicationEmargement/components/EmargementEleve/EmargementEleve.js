@@ -104,9 +104,9 @@ export default function EmargementEleve(props) {
             <View style={styles.button} >
                 <BoutonScanner emargement={emargement} scanEnCours={scanEnCours} />
             </View>
-            <View style={styles.codeEmargement} >
+            {/* <View style={styles.codeEmargement} >
                 <Text style={styles.text}>Code d'émargement: {codeEmargement}</Text>
-            </View>
+            </View> */}
         </View>
         ) : (
             <View>
