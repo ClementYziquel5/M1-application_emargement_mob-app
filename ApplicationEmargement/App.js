@@ -33,8 +33,25 @@ export default function App() {
     
 
     useEffect(() => {
-        fetchSessions(id, isIntervenant,setLoaded,setSessions);
+        fetchSessions();
     }, []);
+
+    async function fetchSessions() {
+        let url = "";
+        if(isIntervenant) {
+            url = `${REACT_APP_API_URL}` + "/v1.0/session/intervenant/" + id;
+        } else {
+            url = `${REACT_APP_API_URL}` + "/v1.0/session/etudiant/" + id;
+        }
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            setSessions(json);
+            setLoaded(true);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return loaded ? (
         <EmargementContext.Provider value={{ emargementEnCours, setEmargementEnCours }}>
@@ -101,23 +118,6 @@ export default function App() {
             <ActivityIndicator size="large" color="#E20612" style={styles.spinner} />
         </View>
     );
-}
-
-async function fetchSessions(id, isIntervenant,setLoaded,setSessions) {
-    let url = "";
-    if(isIntervenant) {
-        url = `${REACT_APP_API_URL}` + "/v1.0/session/intervenant/" + id;
-    } else {
-        url = `${REACT_APP_API_URL}` + "/v1.0/session/etudiant/" + id;
-    }
-    try {
-        const response = await fetch(url);
-        const json = await response.json();
-        setSessions(json);
-        setLoaded(true);
-    } catch (error) {
-        console.error(error);
-    }
 }
 
 const styles = StyleSheet.create({
