@@ -4,6 +4,8 @@ import { NavigationContainer, DefaultTheme  } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {REACT_APP_API_URL} from "@env"
 import { LogBox } from "react-native";
+import { Image } from 'react-native';
+
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 LogBox.ignoreLogs(["Error reading NFC"]);
@@ -61,6 +63,7 @@ export default function App() {
     }
 
     return loaded ? (
+        
         <EmargementContext.Provider value={{ emargementEnCours, setEmargementEnCours }}>
             <NavigationContainer theme={theme}>
                 <ScrollView
