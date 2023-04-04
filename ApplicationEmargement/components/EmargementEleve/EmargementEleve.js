@@ -37,7 +37,7 @@ export default function EmargementEleve(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
-            props.setDefaultPage(true);
+            props.setDefaultPage(false);
             stopScan();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation
@@ -85,7 +85,7 @@ export default function EmargementEleve(props) {
     
     useEffect(() => {
         fetchCodeEmargement(props.sessionId, props.ine);
-        props.setDefaultPage(false);
+        props.setDefaultPage(true);
     }, []);
 
     async function fetchCodeEmargement(idSession, ine) {
