@@ -23,7 +23,7 @@ import EmargementContext from "./contexts/EmargementContext";
 
 export default function App() {
     const [isConnected, setIsConnected] = useState(true); // Pour l'instant en dur
-    const [defaultPage, setDefaultPage] = useState(true); // Si on est sur la page d'acceuil, true, sinon false, c'est pour gérer l'affichage de la flèche du header
+    const [defaultPage, setDefaultPage] = useState(false); // Si on est sur la page d'emargement, true, sinon false, c'est pour gérer l'affichage de la flèche du header
     const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
     const [id, setId] = useState("10"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
@@ -43,7 +43,6 @@ export default function App() {
         setRefreshing(false);
     }
     
-
     async function fetchSessions() {
         let url = "";
         if(isIntervenant) {

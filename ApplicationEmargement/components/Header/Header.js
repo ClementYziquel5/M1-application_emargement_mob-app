@@ -18,18 +18,21 @@ export default function Header(props) {
 
     return (
         <View style={styles.container}>
-            {props.defaultPage ? null : 
-            <TouchableOpacity
-                disabled={false}
-                onPressOut={() =>{
-                    if(!props.defaultPage) {
-                        props.setDefaultPage(true);
-                        props.navigation.goBack();
-                    } 
-                }}
-            >
-                <Image source={require('./arrow.png')} style={styles.arrow}/>
-            </TouchableOpacity>}
+            {props.defaultPage ?                                //Si la page actuelle est la defaultPage (la defaultPage est la page d'émargement)
+                       <TouchableOpacity
+                       disabled={false}
+                       onPressOut={() =>{                       //Lorsque l'on clique sur la flèche
+                           if(props.defaultPage) {              //Si la page n'est pas la page par défaut
+                               props.setDefaultPage(false);     //On remet la page par défaut
+                               props.navigation.goBack();       //On revient à la page précédente
+                           }
+                       }}
+                       >
+                           <Image source={require('./arrow.png')} style={styles.arrow}/>
+                       </TouchableOpacity>
+            :
+            null
+            }
 
             <Image source={require('./logo.png')} style={styles.logo} />
 

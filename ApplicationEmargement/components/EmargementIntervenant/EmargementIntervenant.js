@@ -36,7 +36,7 @@ export default function EmargementIntervenant(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
-            props.setDefaultPage(true);
+            props.setDefaultPage(false);
             stopContinuousScan();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation
@@ -55,7 +55,7 @@ export default function EmargementIntervenant(props) {
     }
 
     useEffect(() => {
-        props.setDefaultPage(false);
+        props.setDefaultPage(true);
         fetchEtudiants(props.sessionId);
     }, []);
 
