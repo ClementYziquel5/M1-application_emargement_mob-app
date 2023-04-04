@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, View, Text, ScrollView, ActivityIndicator, AppRegistry} from "react-native";
-import { NavigationContainer, DefaultTheme , ThemeProvider, useNavigation } from '@react-navigation/native';
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator, RefreshControl } from "react-native";
+import { NavigationContainer, DefaultTheme  } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {REACT_APP_API_URL} from "@env"
 import { LogBox } from "react-native";
@@ -29,11 +29,20 @@ export default function App() {
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
+    const [refreshing, setRefreshing] = useState(false);
     
 
     useEffect(() => {
         fetchSessions();
     }, []);
+
+    async function onRefresh() {
+        setRefreshing(true);
+        setLoaded(false);
+        await fetchSessions();
+        setRefreshing(false);
+    }
+    
 
     async function fetchSessions() {
         let url = "";
@@ -43,7 +52,6 @@ export default function App() {
             url = `${REACT_APP_API_URL}` + "/v1.0/session/etudiant/" + id;
         }
         try {
-            console.log(url);
             const response = await fetch(url);
             const json = await response.json();
             setSessions(json);
@@ -56,59 +64,66 @@ export default function App() {
     return loaded ? (
         <EmargementContext.Provider value={{ emargementEnCours, setEmargementEnCours }}>
             <NavigationContainer theme={theme}>
-                <Stack.Navigator
-                    screenOptions={{
-                    gestureEnabled: true,
-                    header: (props) => <Header {...props} navigation={props.navigation} defaultPage={defaultPage} setDefaultPage={setDefaultPage}/>,
-                    }}
+                <ScrollView
+                    contentContainerStyle={{ flex: 1 }}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} contentContainerStyle={{marginTop:20}} />
+                    }
                 >
-                    {isIntervenant ? (
-                    <>
-                        <Stack.Screen
-                        name="ListeSessionsIntervenant"
-                        component={ListeSessions}
-                        options={{ headerShown: true }}
-                        initialParams={{
-                            sessions: sessions,
-                            isIntervenant: isIntervenant,
+                    <Stack.Navigator
+                        screenOptions={{
+                        gestureEnabled: true,
+                        header: (props) => <Header {...props} navigation={props.navigation} defaultPage={defaultPage} setDefaultPage={setDefaultPage}/>,
                         }}
-                        />
-                        <Stack.Screen
-                        name="EmargementIntervenant"
-                        component={EmargementIntervenant}
-                        options={{ headerShown: true }}
-                        initialParams={{
-                            setDefaultPage: (bool) => {
-                                setDefaultPage(bool)
-                            },
-                        }}
-                        />
-                    </>
-                    ) : (
-                    <>
-                        <Stack.Screen
-                        name="ListeSessionsEleve"
-                        component={ListeSessions}
-                        options={{ headerShown: true }}
-                        initialParams={{
-                            sessions: sessions,
-                            isIntervenant: isIntervenant,
-                        }}
-                        />
-                        <Stack.Screen
-                        name="EmargementEleve"
-                        component={EmargementEleve}
-                        options={{ headerShown: true }}
-                        initialParams={{
-                            ine: id,
-                            setDefaultPage: (bool) => {
-                                setDefaultPage(bool)
-                            },
-                        }}
-                        />
-                    </>
-                    )}
-                </Stack.Navigator>
+                    >
+                        {isIntervenant ? (
+                        <>
+                            <Stack.Screen
+                            name="ListeSessionsIntervenant"
+                            component={ListeSessions}
+                            options={{ headerShown: true }}
+                            initialParams={{
+                                sessions: sessions,
+                                isIntervenant: isIntervenant,
+                            }}
+                            />
+                            <Stack.Screen
+                            name="EmargementIntervenant"
+                            component={EmargementIntervenant}
+                            options={{ headerShown: true }}
+                            initialParams={{
+                                setDefaultPage: (bool) => {
+                                    setDefaultPage(bool)
+                                },
+                            }}
+                            />
+                        </>
+                        ) : (
+                        <>
+                            <Stack.Screen
+                            name="ListeSessionsEleve"
+                            component={ListeSessions}
+                            options={{ headerShown: true }}
+                            initialParams={{
+                                sessions: sessions,
+                                isIntervenant: isIntervenant,
+                            }}
+                            />
+                            <Stack.Screen
+                            name="EmargementEleve"
+                            component={EmargementEleve}
+                            options={{ headerShown: true }}
+                            initialParams={{
+                                ine: id,
+                                setDefaultPage: (bool) => {
+                                    setDefaultPage(bool)
+                                },
+                            }}
+                            />
+                        </>
+                        )}
+                    </Stack.Navigator>
+                </ScrollView>
             </NavigationContainer>
         </EmargementContext.Provider>
     ) : (
