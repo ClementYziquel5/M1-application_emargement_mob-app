@@ -4,7 +4,6 @@ import { NavigationContainer, DefaultTheme  } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {REACT_APP_API_URL} from "@env"
 import { LogBox } from "react-native";
-import { Image } from 'react-native';
 
 
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
@@ -26,8 +25,8 @@ import EmargementContext from "./contexts/EmargementContext";
 export default function App() {
     const [isConnected, setIsConnected] = useState(true); // Pour l'instant en dur
     const [defaultPage, setDefaultPage] = useState(false); // Si on est sur la page d'emargement, true, sinon false, c'est pour gérer l'affichage de la flèche du header
-    const [isIntervenant, setIsIntervenant] = useState(false); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("081501761JL"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("10"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
