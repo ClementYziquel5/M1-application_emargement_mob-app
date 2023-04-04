@@ -24,8 +24,8 @@ import EmargementContext from "./contexts/EmargementContext";
 export default function App() {
     const [isConnected, setIsConnected] = useState(true); // Pour l'instant en dur
     const [defaultPage, setDefaultPage] = useState(true); // Si on est sur la page d'acceuil, true, sinon false, c'est pour gérer l'affichage de la flèche du header
-    const [isIntervenant, setIsIntervenant] = useState(false); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("081501761JL"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("10"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
@@ -78,8 +78,8 @@ export default function App() {
                         component={EmargementIntervenant}
                         options={{ headerShown: true }}
                         initialParams={{
-                            setDefaultPage: () => {
-                                setDefaultPage()
+                            setDefaultPage: (bool) => {
+                                setDefaultPage(bool)
                             },
                         }}
                         />
@@ -101,8 +101,8 @@ export default function App() {
                         options={{ headerShown: true }}
                         initialParams={{
                             ine: id,
-                            setDefaultPage: () => {
-                                setDefaultPage()
+                            setDefaultPage: (bool) => {
+                                setDefaultPage(bool)
                             },
                         }}
                         />

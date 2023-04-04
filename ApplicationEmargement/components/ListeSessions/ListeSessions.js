@@ -34,7 +34,6 @@ export default function ListeSessions(props) {
                             ) :
                             !emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id })
                         }
-                        //!emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id });
                     }}
                 >
                     <View style={styles.top}>

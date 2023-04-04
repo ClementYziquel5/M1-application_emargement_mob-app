@@ -18,7 +18,6 @@ import { HCESession, NFCTagType4NDEFContentType, NFCTagType4 } from 'react-nativ
  * - session: session en cours
  * - ine: ine de l'élève
  * - setDefaultPage: fonction pour remettre la page par défaut
- * - emargementEnCours: booléen pour savoir si l'émargement est en cours
  */
 export default function EmargementEleve(props) {
     const {navigation} = props;
@@ -38,6 +37,7 @@ export default function EmargementEleve(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
+            props.setDefaultPage(true);
             stopScan();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation

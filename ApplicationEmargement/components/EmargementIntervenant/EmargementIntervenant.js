@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { StyleSheet, TouchableOpacity, Text, View, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
 import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
 
@@ -36,6 +36,7 @@ export default function EmargementIntervenant(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Empêche la navigation
+            props.setDefaultPage(true);
             stopContinuousScan();
             onBackPress(); // Exécute la fonction de gestion d'événement
             navigation.dispatch(e.data.action); // Autorise la navigation
