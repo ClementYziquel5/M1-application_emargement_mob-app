@@ -1,17 +1,18 @@
-import React, { useEffect, useContext } from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
+import React, {useContext} from "react";
+import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-native";
 import EmargementContext from "../../contexts/EmargementContext";
 
 /*
- * Liste des sessions de l'intervenant
+ * Liste des sessions de l'élève
  * 
  * props:
  * - navigation: navigation
  * 
  * props.route.params:
- * - sessions: liste des sessions de l'intervenant
+ * - sessions: liste des sessions de l'élève
+ * - isIntervenant: booléen indiquant si l'utilisateur est un intervenant
  */
-export default function ListeSessionsIntervenant(props) {
+export default function ListeSessions(props) {
     const { navigation } = props;
     const { emargementEnCours, setEmargementEnCours } = useContext(EmargementContext);
 
@@ -20,28 +21,39 @@ export default function ListeSessionsIntervenant(props) {
         props = props.route.params;
     }
 
-    return props.sessions && (
-        <ScrollView contentContainerStyle={styles.ScrollView}>
+    return props.sessions && ( 
+        <ScrollView contentContainerStyle={styles.ScrollView}>            
             {props.sessions.map((session) => (
                 <TouchableOpacity
                     key={session.id}
                     style={styles.session}
                     onPress={() =>{ // si l'émargement est en cours, on ne peut pas changer de session
                         !emargementEnCours && setEmargementEnCours(true);
-                        !emargementEnCours && navigation.navigate("EmargementIntervenant", { session: session, sessionId: session.id });
+                        {props.isIntervenant ?
+                            !emargementEnCours && navigation.navigate("EmargementIntervenant", { session: session, sessionId: session.id }
+                            ) :
+                            !emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id })
+                        }
+                        //!emargementEnCours && navigation.navigate("EmargementEleve", { session: session, sessionId: session.id });
                     }}
                 >
                     <View style={styles.top}>
                         <Text style={styles.matiere}>{session.matiere}</Text>
                         <Text style={styles.type}>{session.type}</Text>
-                        <Text style={styles.groupes}>
-                            {session.groupes.slice(0, -1).join(",  ")}  
-                            {session.groupes.length > 1 ? ",  " : ""}
-                            {session.groupes.slice(-1)}
-                        </Text>
-                        {/* Ce code utilise slice() pour récupérer tous les éléments de session.salles, sauf le dernier (on l'ajoute plus tard), et les concatène avec ",  " en utilisant join().
-                        Ensuite, il vérifie si session.salles a plus d'un élément, et s'il en a, il ajoute ",  " pour séparer le dernier élément du reste.
-                        Enfin, il ajoute le dernier élément de session.salles à la fin de la chaîne de caractères.*/}
+                        {props.isIntervenant ? 
+                        (
+                            <Text style={styles.groupes}>
+                                {session.groupes.slice(0, -1).join(",  ")}  
+                                {session.groupes.length > 1 ? ",  " : ""}
+                                {session.groupes.slice(-1)}
+                            </Text>                       
+                        ) : (
+                            <Text style={styles.profs}>
+                                {session.intervenants.slice(0, -1).join(", ")}
+                                {session.intervenants.length > 1 ? ", " : ""}
+                                {session.intervenants.slice(-1)}
+                            </Text>                        
+                        )}
                     </View>
                     <View style={styles.bottom}>
                         <View style={styles.gauche}>
@@ -93,6 +105,15 @@ const styles = StyleSheet.create({
         marginLeft: 4,
         marginTop: 0,
         marginBottom: 5,
+    },
+    profs: {
+        fontSize: fontSizeRef + 0,
+        color: "white",
+        fontFamily: "Cabin-Bold",
+        marginLeft: 4,
+        marginTop: 5,
+        marginBottom: 4,
+        width: "70%",
     },
     groupes: {
         fontSize: fontSizeRef + 0,

@@ -16,17 +16,16 @@ LogBox.ignoreLogs(["Non-serializable values were found in the navigation state."
 const Stack = createStackNavigator();
 
 import Header from "./components/Header/Header";
-import ListeSessionsIntervenant from "./components/ListeSessionsIntervenant/ListeSessionsIntervenant";
+import ListeSessions from "./components/ListeSessions/ListeSessions";
 import EmargementEleve from "./components/EmargementEleve/EmargementEleve";
-import ListeSessionsEleve from "./components/ListeSessionsEleve/ListeSessionsEleve";
 import EmargementIntervenant from "./components/EmargementIntervenant/EmargementIntervenant";
 import EmargementContext from "./contexts/EmargementContext";
 
 export default function App() {
     const [isConnected, setIsConnected] = useState(true); // Pour l'instant en dur
     const [defaultPage, setDefaultPage] = useState(true); // Si on est sur la page d'acceuil, true, sinon false, c'est pour gérer l'affichage de la flèche du header
-    const [isIntervenant, setIsIntervenant] = useState(true); // Pour l'instant en dur, true = intervenant, false = élève
-    const [id, setId] = useState("10"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
+    const [isIntervenant, setIsIntervenant] = useState(false); // Pour l'instant en dur, true = intervenant, false = élève
+    const [id, setId] = useState("081501761JL"); // Pour l'instant en dur (4 = LANGLAIS Sebastien) (081501761JL = LEROY Jacques)
     const [loaded, setLoaded] = useState(false); // Si les données ont été chargées
     const [sessions, setSessions] = useState([]); // Liste des sessions
     const [emargementEnCours, setEmargementEnCours] = useState(false); // Si un émargement est en cours
@@ -44,6 +43,7 @@ export default function App() {
             url = `${REACT_APP_API_URL}` + "/v1.0/session/etudiant/" + id;
         }
         try {
+            console.log(url);
             const response = await fetch(url);
             const json = await response.json();
             setSessions(json);
@@ -66,10 +66,11 @@ export default function App() {
                     <>
                         <Stack.Screen
                         name="ListeSessionsIntervenant"
-                        component={ListeSessionsIntervenant}
+                        component={ListeSessions}
                         options={{ headerShown: true }}
                         initialParams={{
                             sessions: sessions,
+                            isIntervenant: isIntervenant,
                         }}
                         />
                         <Stack.Screen
@@ -87,10 +88,11 @@ export default function App() {
                     <>
                         <Stack.Screen
                         name="ListeSessionsEleve"
-                        component={ListeSessionsEleve}
+                        component={ListeSessions}
                         options={{ headerShown: true }}
                         initialParams={{
                             sessions: sessions,
+                            isIntervenant: isIntervenant,
                         }}
                         />
                         <Stack.Screen

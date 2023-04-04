@@ -90,7 +90,7 @@ export default function EmargementEleve(props) {
 
     async function fetchCodeEmargement(idSession, ine) {
         let url = `${REACT_APP_API_URL}` + "/v1.0/session/" + idSession + "/etudiant/" + ine + "/code_emargement";
-    
+        console.log(url);
         return fetch(url)
         .then((response) => response.json())
         .then((json) => {
