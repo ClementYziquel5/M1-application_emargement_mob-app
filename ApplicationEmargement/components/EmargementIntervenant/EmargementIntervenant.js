@@ -4,7 +4,7 @@ import {REACT_APP_API_URL} from "@env"
 import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
 
 import BoutonEmargement from "../BoutonEmargement/BoutonEmargement";
-import ListeSessionsIntervenant from "../ListeSessionsIntervenant/ListeSessionsIntervenant";
+import ListeSessions from "../ListeSessions/ListeSessions";
 import ListeEleves from "../ListeEleves/ListeEleves";
 import EmargementContext from "../../contexts/EmargementContext";
 
@@ -149,7 +149,7 @@ export default function EmargementIntervenant(props) {
     return loaded ? (
         <View style={styles.emargementIntervenant} >
             <View>
-            <ListeSessionsIntervenant sessions={[props.session]}/>
+            <ListeSessions sessions={[props.session]}/>
             </View>
             <View style={styles.button} >
                 <BoutonEmargement startContinuousScan={startContinuousScan} stopContinuousScan={stopContinuousScan} scanEnCours={scanEnCours}/>

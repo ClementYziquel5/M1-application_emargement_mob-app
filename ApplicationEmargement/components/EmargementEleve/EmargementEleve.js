@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import {REACT_APP_API_URL} from "@env"
 
 import BoutonScanner from "../BoutonScanner/BoutonScanner";
-import ListeSessionsEleve from "../ListeSessionsEleve/ListeSessionsEleve";
+import ListeSessions from "../ListeSessions/ListeSessions";
 import EmargementContext from "../../contexts/EmargementContext";
 import { HCESession, NFCTagType4NDEFContentType, NFCTagType4 } from 'react-native-hce';
 
@@ -105,7 +105,7 @@ export default function EmargementEleve(props) {
     return loaded ? (
         <View style={styles.emargementEleve} >
             <View>
-                <ListeSessionsEleve sessions={[props.session]} emargementEnCours={props.emargementEnCours}/>
+                <ListeSessions sessions={[props.session]} emargementEnCours={props.emargementEnCours}/>
             </View>
             <Text style={styles.text}>Émargement</Text>
             <View style={styles.button} >
