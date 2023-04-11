@@ -7,7 +7,7 @@ Application mobile d'émargement électronique
 Cette application mobile codée en React Native permet d'effectuer l'émargement électronique des élèves avec l'intervenant. Elle sert uniquement à l'émargement en physique, elle ne permet pas de modifications manuelles des données. Cette application a été développé avec des téléphones physiques et Android SDK. iOS n'est pas supporté mais le code est prêt pour. Cette application fonctionne en parallèle de l'application web.
 ***
 ## Installation
-To start, you need to set up your working environmment with Node.js and React Native CLI.
+To start, you need to set up your working environmment with Node.js and React Native CLI. Check : https://reactnative.dev/docs/environment-setup.
 
 Then :
 ```
@@ -24,7 +24,7 @@ Create the .env.local file. Update the REACT_APP_API_URL with your CAS server en
 cp .env .env.local
 ```
 
-Run the metreo server
+Run the metro server
 ```
 npx react-native start
 ```
